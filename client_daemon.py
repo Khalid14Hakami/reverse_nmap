@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
  
 import sys, socket, json, logging, os
-from daemon import Daemon
+from daemon import daemon
  
 
 class ClientDaemon(Daemon):
