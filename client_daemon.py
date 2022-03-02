@@ -4,7 +4,7 @@ import sys, socket, json, logging, os
 from daemon import daemon
  
 
-class ClientDaemon(Daemon):
+class ClientDaemon(daemon):
         def run(self):
             self.connect()
 
