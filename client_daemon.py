@@ -16,6 +16,8 @@ class ClientDaemon(daemon):
                 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     s.bind((HOST, PORT))
                     s.listen()
+                    logging.DEBUG('daemon listening on port '+ str(PORT))
+
                     while True:
                         conn, addr = s.accept()
                         with conn:
@@ -42,7 +44,10 @@ class ClientDaemon(daemon):
         
         def execute(json_command):
             file = json_command["script_path"]
-            os.system(file)
+            try:
+                os.system(file)
+            except Exception as e:
+                logging.DEBUG(e)
             return True
  
 if __name__ == "__main__":
@@ -50,9 +55,11 @@ if __name__ == "__main__":
         logging.basicConfig(level = logging.DEBUG, filename = '/tmp/client_daemon.log')
 
         daemon = ClientDaemon('/tmp/client_daemon.pid')
+
         if len(sys.argv) == 2:
                 if 'start' == sys.argv[1]:
                         daemon.start()
+                        logging.DEBUG('daemon started')
                 elif 'stop' == sys.argv[1]:
                         daemon.stop()
                 elif 'restart' == sys.argv[1]:
