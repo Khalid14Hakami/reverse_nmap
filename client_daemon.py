@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
  
 import sys, socket, json, logging, os
 from daemon import Daemon
