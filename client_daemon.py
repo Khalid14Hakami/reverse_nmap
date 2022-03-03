@@ -9,7 +9,8 @@ class ClientDaemon(daemon):
         log = logging.basicConfig(level = logging.DEBUG, filename = '/tmp/client_daemon.log', filemode='w')
 
         def run(self):
-            self.connect()
+            # self.connect()
+            printO('daemon running')
 
         def connect(self):
             HOST = "" 
