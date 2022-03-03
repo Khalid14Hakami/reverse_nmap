@@ -12,7 +12,7 @@ try:
         print(f"Connected to {HOST}")
 
         data = {
-            "file_path": "/scripts/run_nc.sh",
+            "script_path": "/scripts/run_nc.sh",
             "job": "student"
         }
 
