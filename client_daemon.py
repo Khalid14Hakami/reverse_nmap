@@ -5,8 +5,9 @@ from daemon import daemon
  
 
 class ClientDaemon(daemon):
-        # logging_level = 30 
-        # log = logging.basicConfig(level = logging.DEBUG, filename = '/tmp/client_daemon.log', filemode='w')
+        logging_level = 30 
+        logging.basicConfig(level = logging.DEBUG, filename = '/tmp/client_daemon.log', filemode='w')
+        logger = logging.getLogger('client')
 
         def run(self):
             self.connect()
@@ -20,7 +21,7 @@ class ClientDaemon(daemon):
                     s.bind((HOST, PORT))
                     s.listen()
                     print(('daemon started'))
-                    # self.log.debug('daemon listening on port '+ str(PORT))
+                    self.logger.debug('daemon listening on port '+ str(PORT))
 
                     while True:
                         conn, addr = s.accept()
@@ -33,8 +34,8 @@ class ClientDaemon(daemon):
                                 
                                 data = data.decode("utf-8")
 
-                                # self.log.debug('received the following:')
-                                # self.log.debug(data)
+                                self.logger.debug('received the following:')
+                                self.logger.debug(data)
 
                                 self.execute(data)
 
@@ -43,7 +44,7 @@ class ClientDaemon(daemon):
                                 conn.sendall(bytes(replay,encoding="utf-8"))
             except Exception as e:
                 print(e)
-                # self.log.debug(e)
+                self.logger.debug(e)
 
 
             finally:
@@ -55,7 +56,7 @@ class ClientDaemon(daemon):
             try:
                 os.system(file)
             except Exception as e:
-                # self.log.debug(e)
+                self.logger.debug(e)
                 print(e)
             return True
  
