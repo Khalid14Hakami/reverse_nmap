@@ -10,7 +10,7 @@ class ClientDaemon(daemon):
 
         def run(self):
             # self.connect()
-            printO('daemon running')
+            print('daemon running')
 
         def connect(self):
             HOST = "" 
