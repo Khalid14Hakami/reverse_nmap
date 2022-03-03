@@ -36,7 +36,7 @@ class ClientDaemon(daemon):
 
                                 self.logger.debug('received the following:')
                                 self.logger.debug(data)
-
+                                data = json.loads(data)
                                 self.execute(data)
 
                                 replay = { "message": "data received"}
@@ -44,7 +44,9 @@ class ClientDaemon(daemon):
                                 conn.sendall(bytes(replay,encoding="utf-8"))
             except Exception as e:
                 print(e)
+                self.logger.debug('at connect level')
                 self.logger.debug(e)
+
 
 
             finally:
@@ -56,8 +58,8 @@ class ClientDaemon(daemon):
             try:
                 os.system(file)
             except Exception as e:
+                self.logger.debug('at connect execution')
                 self.logger.debug(e)
-                print(e)
             return True
  
 if __name__ == "__main__":
