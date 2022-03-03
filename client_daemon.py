@@ -5,8 +5,8 @@ from daemon import daemon
  
 
 class ClientDaemon(daemon):
-        logging_level = 30 
-        log = logging.basicConfig(level = logging.DEBUG, filename = '/tmp/client_daemon.log', filemode='w')
+        # logging_level = 30 
+        # log = logging.basicConfig(level = logging.DEBUG, filename = '/tmp/client_daemon.log', filemode='w')
 
         def run(self):
             self.connect()
@@ -20,7 +20,7 @@ class ClientDaemon(daemon):
                     s.bind((HOST, PORT))
                     s.listen()
                     print(('daemon started'))
-                    self.log.debug('daemon listening on port '+ str(PORT))
+                    # self.log.debug('daemon listening on port '+ str(PORT))
 
                     while True:
                         conn, addr = s.accept()
@@ -33,8 +33,8 @@ class ClientDaemon(daemon):
                                 
                                 data = data.decode("utf-8")
 
-                                self.log.debug('received the following:')
-                                self.log.debug(data)
+                                # self.log.debug('received the following:')
+                                # self.log.debug(data)
 
                                 self.execute(data)
 
@@ -43,7 +43,7 @@ class ClientDaemon(daemon):
                                 conn.sendall(bytes(replay,encoding="utf-8"))
             except Exception as e:
                 print(e)
-                self.log.debug(e)
+                # self.log.debug(e)
 
 
             finally:
@@ -55,7 +55,8 @@ class ClientDaemon(daemon):
             try:
                 os.system(file)
             except Exception as e:
-                self.log.debug(e)
+                # self.log.debug(e)
+                print(e)
             return True
  
 if __name__ == "__main__":
@@ -67,7 +68,7 @@ if __name__ == "__main__":
                 if 'start' == sys.argv[1]:
                         print('daemon started')
                         daemon.start()
-                        daemon.log.debug('daemon started')
+                        # daemon.log.debug('daemon started')
                 elif 'stop' == sys.argv[1]:
                         daemon.stop()
                 elif 'restart' == sys.argv[1]:
