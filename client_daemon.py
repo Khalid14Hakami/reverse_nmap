@@ -6,8 +6,8 @@ from daemon import daemon
 
 class ClientDaemon(daemon):
         logging_level = 30 
-        logging.basicConfig(level = logging.DEBUG, filename = '/tmp/client_daemon.log')
-        
+        logging.basicConfig(level = logging.DEBUG, filename = '/tmp/client_daemon.log', filemode='w')
+
         def run(self):
             self.connect()
 
