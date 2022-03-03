@@ -19,6 +19,7 @@ class ClientDaemon(daemon):
                 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     s.bind((HOST, PORT))
                     s.listen()
+                    print(('daemon started'))
                     self.log.DEBUG('daemon listening on port '+ str(PORT))
 
                     while True:
@@ -40,12 +41,16 @@ class ClientDaemon(daemon):
                                 replay = { "message": "data received"}
                                 replay = json.dumps(replay)
                                 conn.sendall(bytes(replay,encoding="utf-8"))
+            except Exception as e:
+                print(e)
+                self.log.DEBUG(e)
+
 
             finally:
                 s.close()
                 return data
         
-        def execute(json_command):
+        def execute(self, json_command):
             file = json_command["script_path"]
             try:
                 os.system(file)
@@ -61,6 +66,7 @@ if __name__ == "__main__":
         if len(sys.argv) == 2:
                 if 'start' == sys.argv[1]:
                         daemon.start()
+                        print('daemon started')
                         daemon.log.DEBUG('daemon started')
                 elif 'stop' == sys.argv[1]:
                         daemon.stop()
