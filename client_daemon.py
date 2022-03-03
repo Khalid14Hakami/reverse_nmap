@@ -2,6 +2,8 @@
  
 import sys, socket, json, logging, os
 from daemon import daemon
+import subprocess
+
  
 
 class ClientDaemon(daemon):
@@ -37,11 +39,12 @@ class ClientDaemon(daemon):
                                 self.logger.debug('received the following:')
                                 self.logger.debug(data)
                                 data = json.loads(data)
-                                self.execute(data)
-
-                                replay = { "message": "data received"}
-                                replay = json.dumps(replay)
-                                conn.sendall(bytes(replay,encoding="utf-8"))
+                                
+                                result = self.execute(data)
+                                if result:
+                                    replay = { "message": "script started"}
+                                    replay = json.dumps(replay)
+                                    conn.sendall(bytes(replay,encoding="utf-8"))
             except Exception as e:
                 print(e)
                 self.logger.debug('at connect level')
@@ -56,7 +59,7 @@ class ClientDaemon(daemon):
         def execute(self, json_command):
             file = json_command["script_path"]
             try:
-                os.system(file)
+                subprocess.Popen(file)
             except Exception as e:
                 self.logger.debug('at connect execution')
                 self.logger.exception(e)
