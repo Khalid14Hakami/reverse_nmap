@@ -5,6 +5,9 @@ from daemon import daemon
  
 
 class ClientDaemon(daemon):
+        logging_level = 30 
+        logging.basicConfig(level = logging.DEBUG, filename = '/tmp/client_daemon.log')
+        
         def run(self):
             self.connect()
 
@@ -51,8 +54,7 @@ class ClientDaemon(daemon):
             return True
  
 if __name__ == "__main__":
-        logging_level = 30 
-        logging.basicConfig(level = logging.DEBUG, filename = '/tmp/client_daemon.log')
+
 
         daemon = ClientDaemon('/tmp/client_daemon.pid')
 
