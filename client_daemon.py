@@ -45,7 +45,7 @@ class ClientDaemon(daemon):
             except Exception as e:
                 print(e)
                 self.logger.debug('at connect level')
-                self.logger.debug(e)
+                self.logger.exception(e)
 
 
 
@@ -59,7 +59,7 @@ class ClientDaemon(daemon):
                 os.system(file)
             except Exception as e:
                 self.logger.debug('at connect execution')
-                self.logger.debug(e)
+                self.logger.exception(e)
             return True
  
 if __name__ == "__main__":
