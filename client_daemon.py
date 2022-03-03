@@ -65,8 +65,8 @@ if __name__ == "__main__":
 
         if len(sys.argv) == 2:
                 if 'start' == sys.argv[1]:
-                        daemon.start()
                         print('daemon started')
+                        daemon.start()
                         daemon.log.DEBUG('daemon started')
                 elif 'stop' == sys.argv[1]:
                         daemon.stop()
