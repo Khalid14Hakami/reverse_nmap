@@ -6,7 +6,7 @@ from daemon import daemon
 
 class ClientDaemon(daemon):
         logging_level = 30 
-        logging.basicConfig(level = logging.DEBUG, filename = '/tmp/client_daemon.log', filemode='w')
+        log = logging.basicConfig(level = logging.DEBUG, filename = '/tmp/client_daemon.log', filemode='w')
 
         def run(self):
             self.connect()
@@ -19,7 +19,7 @@ class ClientDaemon(daemon):
                 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     s.bind((HOST, PORT))
                     s.listen()
-                    logging.DEBUG('daemon listening on port '+ str(PORT))
+                    self.log.DEBUG('daemon listening on port '+ str(PORT))
 
                     while True:
                         conn, addr = s.accept()
@@ -32,8 +32,8 @@ class ClientDaemon(daemon):
                                 
                                 data = data.decode("utf-8")
 
-                                logging.DEBUG('received the following:')
-                                logging.DEBUG(data)
+                                self.log.DEBUG('received the following:')
+                                self.log.DEBUG(data)
 
                                 self.execute(data)
 
@@ -50,7 +50,7 @@ class ClientDaemon(daemon):
             try:
                 os.system(file)
             except Exception as e:
-                logging.DEBUG(e)
+                self.log.DEBUG(e)
             return True
  
 if __name__ == "__main__":
@@ -61,7 +61,7 @@ if __name__ == "__main__":
         if len(sys.argv) == 2:
                 if 'start' == sys.argv[1]:
                         daemon.start()
-                        logging.DEBUG('daemon started')
+                        daemon.log.DEBUG('daemon started')
                 elif 'stop' == sys.argv[1]:
                         daemon.stop()
                 elif 'restart' == sys.argv[1]:
