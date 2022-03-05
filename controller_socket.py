@@ -67,6 +67,7 @@ def trigger_clients(clients_settings):
         trigger scenario communication to target server
     """
     for setting in clients_settings:
+        print(setting)
         result = connect(setting)
         if result['message'] == True:
             return True
