@@ -8,7 +8,7 @@ import os.path
 def connect(configs):
     HOST = configs['HOST'] # socket.gethostname() 
     PORT = 5432  # Port to listen on (non-privileged ports are > 1023)
-
+    ans = ""
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.connect((HOST, PORT))
@@ -28,6 +28,7 @@ def connect(configs):
             print(ans)        
     finally:
         s.close()
+        print ("answer: \n", ans )
         return ans
 
 
