@@ -66,13 +66,14 @@ def trigger_clients(clients_settings):
         this contact clients' deamons to 
         trigger scenario communication to target server
     """
-    result = connect(clients_settings)
-    if result['message'] == True:
-        return True
-    else:
-        print('server did not start successfully')
-        print(result)
-        sys.exit(2)
+    for setting in clients_settings:
+        result = connect(setting)
+        if result['message'] == True:
+            return True
+        else:
+            print('server did not start successfully')
+            print(result)
+            sys.exit(2)
 
 
 if __name__ == "__main__":
