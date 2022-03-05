@@ -25,7 +25,9 @@ def connect(configs):
             ans = s.recv(1024)
             ans = ans.decode("utf-8")
             ans = json.loads(ans)
-            print(ans)        
+            print(ans) 
+    except Exception as e:
+        print(e)       
     finally:
         s.close()
         print ("answer: \n", ans )
