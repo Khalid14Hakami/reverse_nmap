@@ -70,7 +70,7 @@ def trigger_clients(clients_settings):
         print(setting)
         result = connect(setting)
         if result['message'] == True:
-            return True
+            pass 
         else:
             print('server did not start successfully')
             print(result)
