@@ -1,3 +1,3 @@
 #!/bin/sh 
-echo "test" | nc s1 2000
+echo "test" | nc -q 3 s1 2000
 exit 0
