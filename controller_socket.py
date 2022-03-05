@@ -3,6 +3,7 @@ from json.tool import main
 from site import execsitecustomize
 import socket, json
 import sys
+import os.path
 
 def connect(configs):
     HOST = configs['HOST'] # socket.gethostname() 
@@ -74,7 +75,7 @@ def trigger_clients(clients_settings):
 if __name__ == "__main__":
 
     if len(sys.argv) == 2:
-        if  sys.argv[1] is 'json':
+        if   os.path.isfile(sys.argv[1]) and os.path.splitext(sys.argv[1])[1] == 'json':
             # load json from file
             scenario = get_scenario(sys.argv[1])
             server_settings = scenario['server_setting']
