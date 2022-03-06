@@ -6,10 +6,10 @@ import subprocess
 
  
 
-class ClientDaemon(daemon):
+class ServerDaemon(daemon):
         logging_level = 30 
-        logging.basicConfig(level = logging.DEBUG, filename = '/tmp/client_daemon.log', filemode='w')
-        logger = logging.getLogger('client')
+        logging.basicConfig(level = logging.DEBUG, filename = '/tmp/server_daemon.log', filemode='w')
+        logger = logging.getLogger('server')
 
         def run(self):
             self.connect()
@@ -22,7 +22,6 @@ class ClientDaemon(daemon):
                 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                     s.bind((HOST, PORT))
                     s.listen()
-                    print(('daemon started'))
                     self.logger.debug('daemon listening on port '+ str(PORT))
 
                     while True:
@@ -41,13 +40,11 @@ class ClientDaemon(daemon):
                                 data = json.loads(data)
                                 
                                 result = self.execute(data)
-                                
-                                replay = { "message": result}
-                                replay = json.dumps(replay)
-                                conn.sendall(bytes(replay,encoding="utf-8"))
-                                
+                                if result:
+                                    replay = { "message": "script started"}
+                                    replay = json.dumps(replay)
+                                    conn.sendall(bytes(replay,encoding="utf-8"))
             except Exception as e:
-                print(e)
                 self.logger.exception(e)
 
 
@@ -62,13 +59,12 @@ class ClientDaemon(daemon):
                 subprocess.Popen(file)
             except Exception as e:
                 self.logger.exception(e)
-                return(e)
             return True
  
 if __name__ == "__main__":
 
 
-        daemon = ClientDaemon('/tmp/client_daemon.pid')
+        daemon = ServerDaemon('/tmp/client_daemon.pid')
 
         if len(sys.argv) == 2:
                 if 'start' == sys.argv[1]:
