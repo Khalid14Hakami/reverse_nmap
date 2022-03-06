@@ -59,7 +59,13 @@ def prepare_sniffer(siffer_setting):
     """
     this function contact the sniffer daemon to prepare sniffing based on the scenario
     """
-    return True
+    result = connect(siffer_setting)
+    if result['message'] == True:
+        pass 
+    else:
+        print('sniffer did not start successfully')
+        print(result)
+        sys.exit(2)
 
 def trigger_clients(clients_settings):
     """
@@ -85,12 +91,13 @@ if __name__ == "__main__":
             scenario = get_scenario(sys.argv[1])
             server_settings = scenario['server_setting']
             clients_settings = scenario['clients_settings']
+            sniffer_settings = scenario['sniffer_settings']
+
             server_status = prepare_server(server_settings)
-            snfiffer_status = prepare_sniffer(scenario)
+            snfiffer_status = prepare_sniffer(sniffer_settings)
 
             if server_status and snfiffer_status:
                 trigger_clients(clients_settings)
-
         else:
             print ("file format not suported")
             sys.exit(2)

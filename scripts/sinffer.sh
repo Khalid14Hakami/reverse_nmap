@@ -4,3 +4,11 @@
 
 tcpdump -U -w test_capture.pcap host c1 or host s1
 sleep 5
+
+# interrupt the sniffer.  get its PID:  
+pid=$(ps -e | pgrep tcpdump)  
+echo $pid  
+
+#interrupt it:  
+sleep 180
+kill -2 $pid
