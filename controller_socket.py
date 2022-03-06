@@ -55,11 +55,11 @@ def prepare_server(server_settings):
         print(result)
         sys.exit(2)
 
-def prepare_sniffer(siffer_setting):
+def prepare_sniffer(sniffer_setting):
     """
     this function contact the sniffer daemon to prepare sniffing based on the scenario
     """
-    result = connect(siffer_setting)
+    result = connect(sniffer_setting)
     if result['message'] == True:
         pass 
     else:
