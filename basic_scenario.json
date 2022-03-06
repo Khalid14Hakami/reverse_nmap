@@ -9,7 +9,7 @@
             "script_path": "/root/reverse_nmap/scripts/run_nc_client.sh"
         }
     ],
-    "siffer_settings": {
+    "sniffer_settings": {
         "HOST": "sniffer",
         "script_path": "/root/reverse_nmap/scripts/sniffer.sh"
     }
