@@ -8,12 +8,12 @@ while True:
     packet = s.recvfrom(2000)
     p = packet[0]
     
-    ip = IP(src=p[IP].dst, dst=p[IP].src)/TCP(
+    ip = IP(src=p['IP'].dst, dst=p['IP'].src)/TCP(
         flags='A',
-        sport=p[TCP].dport,
-        dport=p[TCP].sport,
-        seq = ackpkt[TCP].seq + 1,
-        ack = p[TCP].seq + 1,
+        sport=p['TCP'].dport,
+        dport=p['TCP'].sport,
+        seq = ackpkt['TCP'].seq + 1,
+        ack = p['TCP'].seq + 1,
     )
     
     send(ip, verbose=scapy_verbose)
