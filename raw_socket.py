@@ -16,6 +16,6 @@ while True:
         seq = 0,
         ack = p['TCP'].seq + 1,
         )
-        ans, un = sr(ip, verbose=30)
+        sr(ip, verbose=30)
 
-    print ("%s\n => %s" % (p[IP].summary(), ans.summary()))
+    print ("%s\n" % (p[IP].summary()))
