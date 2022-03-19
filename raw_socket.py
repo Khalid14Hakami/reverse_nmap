@@ -6,14 +6,14 @@ while True:
     # packet = s.recvfrom(65535)[0].decode()    #decode packet
     # print(packet)   #print packet to read
     packet = s.recvfrom(2000)
-    p = packet[0]
+    packet = packet[0]
+    p = IP(packet)
     
     ip = IP(src=p['IP'].dst, dst=p['IP'].src)/TCP(
-        flags='A',
-        sport=p['TCP'].dport,
-        dport=p['TCP'].sport,
-        seq = ackpkt['TCP'].seq + 1,
-        ack = p['TCP'].seq + 1,
+    flags='A',
+    sport=p['TCP'].dport,
+    dport=p['TCP'].sport,
+    seq = ackpkt['TCP'].seq + 1,
+    ack = p['TCP'].seq + 1,
     )
-    
-    send(ip, verbose=scapy_verbose)
+    send(ackpkt, verbose=scapy_verbose)
