@@ -8,12 +8,13 @@ while True:
     packet = s.recvfrom(2000)
     packet = packet[0]
     p = IP(packet)
-    
-    ip = IP(src=p['IP'].dst, dst=p['IP'].src)/TCP(
-    flags='A',
-    sport=p['TCP'].dport,
-    dport=p['TCP'].sport,
-    seq = 0,
-    ack = p['TCP'].seq + 1,
-    )
-    sr(ip, verbose=20)
+    if p['TCP'].flags == 'S':
+        ip = IP(src=p['IP'].dst, dst=p['IP'].src)/TCP(
+        flags='SA',
+        sport=p['TCP'].dport,
+        dport=p['TCP'].sport,
+        seq = 0,
+        ack = p['TCP'].seq + 1,
+        )
+        sr(ip, verbose=20)
+    print(ip)
