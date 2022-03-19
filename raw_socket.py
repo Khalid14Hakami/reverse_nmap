@@ -13,7 +13,7 @@ while True:
     flags='A',
     sport=p['TCP'].dport,
     dport=p['TCP'].sport,
-    seq = ackpkt['TCP'].seq + 1,
+    seq = 0,
     ack = p['TCP'].seq + 1,
     )
-    send(ackpkt, verbose=scapy_verbose)
+    sr(ip, verbose=20)
