@@ -14,7 +14,9 @@ HOST=""
 
 
 class Registrar():
-    
+    manager = multiprocessing.Manager()
+    global workers_list 
+    workers_list = manager.list()
 
     def __init__(self):
         
@@ -66,9 +68,7 @@ class Registrar():
         print("over and out") 
 
     def start(self):
-        manager = multiprocessing.Manager()
-        global workers_list 
-        workers_list = manager.list()
+
         register = multiprocessing.Process(target=self.launch_server, args=[workers_list])
         register.start()
         
