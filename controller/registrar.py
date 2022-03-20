@@ -52,6 +52,7 @@ class Registrar():
                 if data:
                     workers_list.append(data.decode())
                     print(workers_list)
+                    self.workers = workers_list
                     conn.send(str(workers_list).encode('utf-8'))
                 else:
                     print("dropped connection from {}".format(clisocks[conn]))
@@ -70,8 +71,8 @@ class Registrar():
         workers_list = manager.list()
         register = multiprocessing.Process(target=self.launch_server, args=[workers_list])
         register.start()
-        register.join()
-        return True
+        
+        return register
 
 
        
