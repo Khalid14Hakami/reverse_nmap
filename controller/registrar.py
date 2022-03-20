@@ -51,7 +51,8 @@ class Registrar():
                 data=conn.recv(1024)
                 if data:
                     workers_list.append(data)
-                    conn.send(str(workers_list))
+                    print(workers_list)
+                    conn.send(workers_list)
                 else:
                     print("dropped connection from {}".format(clisocks[conn]))
                     clisocks.pop(conn)
