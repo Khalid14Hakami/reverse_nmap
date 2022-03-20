@@ -18,7 +18,7 @@ class Registrar():
 
     def __init__(self):
         
-        self.workers = workers_list
+        self.workers = []
 
         
     def get_workers(self):
