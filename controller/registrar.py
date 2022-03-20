@@ -14,9 +14,7 @@ HOST=""
 
 
 class Registrar():
-    manager = multiprocessing.Manager()
-    global workers_list 
-    workers_list = manager.list()
+    
 
     def __init__(self):
         
@@ -29,7 +27,7 @@ class Registrar():
     def refresh_worker_list():
         pass
 
-    def launch_server(self):
+    def launch_server(self, shared_data):
 
         srv=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         srv.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
@@ -66,7 +64,10 @@ class Registrar():
         print("over and out") 
 
     def start(self):
-        register = multiprocessing.Process(target=self.launch_server)
+        manager = multiprocessing.Manager()
+        global workers_list 
+        workers_list = manager.list()
+        register = multiprocessing.Process(target=self.launch_server, args=[workers_list])
         register.start()
         return True
 
