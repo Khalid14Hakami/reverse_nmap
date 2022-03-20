@@ -11,7 +11,7 @@ class MyPrompt(Cmd):
 
     def do_list(self, inp):
         print(reg.get_workers())
-        print("Adding '{}'".format(inp))
+        print("list '{}'".format(inp))
  
 
 
