@@ -69,6 +69,7 @@ class Registrar():
         workers_list = manager.list()
         register = multiprocessing.Process(target=self.launch_server, args=[workers_list])
         register.start()
+        register.join()
         return True
 
 
