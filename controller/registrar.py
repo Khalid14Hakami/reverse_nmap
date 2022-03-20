@@ -50,9 +50,9 @@ class Registrar():
                 print("There is something to read from {}".format(conn))
                 data=conn.recv(1024)
                 if data:
-                    workers_list.append(data)
+                    workers_list.append(data.decode())
                     print(workers_list)
-                    conn.send(workers_list)
+                    conn.send(str(workers_list).encode('utf-8'))
                 else:
                     print("dropped connection from {}".format(clisocks[conn]))
                     clisocks.pop(conn)
