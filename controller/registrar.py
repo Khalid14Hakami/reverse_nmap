@@ -11,12 +11,15 @@ import multiprocessing
 PORT=4444
 HOST=""
 
-manager = multiprocessing.Manager()
-workers_list = manager.list()
+
 
 class Registrar():
-    
+    manager = multiprocessing.Manager()
+    global workers_list 
+    workers_list = manager.list()
+
     def __init__(self):
+        
         self.workers = workers_list
 
         
