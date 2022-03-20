@@ -14,17 +14,15 @@ HOST=""
 
 
 class Registrar():
-    manager = multiprocessing.Manager()
-    global workers_list 
-    workers_list = manager.list()
+
 
     def __init__(self):
-        
-        self.workers = []
-
+        manager = multiprocessing.Manager()
+        global workers_list 
+        workers_list = manager.list()
         
     def get_workers(self):
-        return self.workers
+        return workers_list
     
     def refresh_worker_list():
         pass
