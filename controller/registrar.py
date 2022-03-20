@@ -11,13 +11,14 @@ import multiprocessing
 PORT=4444
 HOST=""
 
+manager = multiprocessing.Manager()
+workers_list = self.manager.list()
 
 class Registrar():
     
     def __init__(self):
-        self.workers = {}
-        self.manager = multiprocessing.Manager()
-        self.workers = self.manager.list()
+        self.workers = workers_list
+
         
     def get_workers(self):
         return self.workers
@@ -48,8 +49,8 @@ class Registrar():
                 print("There is something to read from {}".format(conn))
                 data=conn.recv(1024)
                 if data:
-                    self.workers.append(data)
-                    conn.send(str(self.workers))
+                    workers_list.append(data)
+                    conn.send(str(workers_list))
                 else:
                     print("dropped connection from {}".format(clisocks[conn]))
                     clisocks.pop(conn)
