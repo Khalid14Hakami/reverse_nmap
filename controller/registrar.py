@@ -29,7 +29,7 @@ class Registrar():
     def refresh_worker_list():
         pass
 
-    def launch_server():
+    def launch_server(self):
 
         srv=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         srv.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
