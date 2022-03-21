@@ -11,11 +11,11 @@ class MyPrompt(Cmd):
 
     def do_list(self, inp):
         print(reg.get_workers())
-        print("list '{}'".format(inp))
+        
+
+    def do_run_test(self, inp):
+        print(reg.get_workers())
  
-
-
-print("File one __name__ is set to: {}" .format(__name__))
 
 
 
