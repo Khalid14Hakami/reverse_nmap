@@ -11,6 +11,7 @@ while True:
     print("".join(map(chr, bytes(packet[0]))))
     packet = packet[0]
     p = IP(packet)
+    print(p)
     if True: # p['TCP'].flags == 'S':
         ip = IP(src=p['IP'].dst, dst=p['IP'].src)/TCP(
         flags='SA',
