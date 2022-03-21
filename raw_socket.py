@@ -10,6 +10,7 @@ while True:
     print('this what we got:')
     print("".join(map(chr, bytes(packet[0]))))
     p = packet
+    print(type(p))
     # p = IP(packet)
     print(packet.summary())
     if True: # p['TCP'].flags == 'S':
