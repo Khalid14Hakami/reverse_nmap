@@ -8,7 +8,7 @@ while True:
     # print(packet)   #print packet to read
     packet = mystream.recv(2000)
     print('this what we got:')
-    print(packet)
+    print(packet[0])
     packet = packet[0]
     p = IP(packet)
     if True: # p['TCP'].flags == 'S':
