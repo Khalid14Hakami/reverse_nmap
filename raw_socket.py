@@ -9,7 +9,7 @@ while True:
     packet = mystream.recv(2000)
     print('this what we got:')
     print("".join(map(chr, bytes(packet[0]))))
-    packet = packet[0]
+    p = packet
     # p = IP(packet)
     print(packet.summary())
     if True: # p['TCP'].flags == 'S':
