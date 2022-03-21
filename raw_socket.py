@@ -7,6 +7,7 @@ while True:
     # packet = s.recvfrom(65535)[0].decode()    #decode packet
     # print(packet)   #print packet to read
     packet = mystream.recv(2000)
+    print('this what we got:')
     print(packet)
     packet = packet[0]
     p = IP(packet)
@@ -18,7 +19,7 @@ while True:
         seq = 0,
         ack = p['TCP'].seq + 1,
         )
-        pair, unans = sr(ip, verbose=30)
+        pair, unans = sr1(ip, verbose=30)
         print (pair)
     
 
