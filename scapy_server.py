@@ -19,7 +19,7 @@ while True:
     print("".join(map(chr, bytes(packet[0]))))
     p = packet[0]
     print(type(packet))
-    # p = IP(packet)
+    p = IP(packet)
     # if Raw in packet:
     #     load = packet[Raw].load
     #     print(load)
