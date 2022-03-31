@@ -34,7 +34,7 @@ while True:
         ack = p['TCP'].seq + 1,
         )
 
-        eval(test_istruction['steps'][0])
+        exec(test_istruction['steps'][0])
         # pair, unans = sr1(ip, verbose=30)
         # print (pair)
     
