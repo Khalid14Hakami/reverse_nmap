@@ -7,7 +7,8 @@ s.bind(('0.0.0.0', 1337))
 test_istruction= {
     "condition": "p['TCP'].dport == 80",
     "steps": [
-        "print('this is a test', p['TCP'].dport)"
+        """print('this is a test', p['TCP'].dport)
+         pair, unans = sr1(ip, verbose=30)"""
     ]
 }
 
@@ -34,8 +35,8 @@ while True:
         )
 
         eval(test_istruction['steps'][0])
-        pair, unans = sr1(ip, verbose=30)
-        print (pair)
+        # pair, unans = sr1(ip, verbose=30)
+        # print (pair)
     
 
     print ("%s\n" % (p[IP].summary()))
