@@ -8,7 +8,7 @@ test_istruction= {
     "condition": "p['TCP'].dport == 80",
     "steps": [
         """print('this is a test', p['TCP'].dport)
-         pair, unans = sr1(ip, verbose=30)"""
+pair, unans = sr1(ip, verbose=30)"""
     ]
 }
 
