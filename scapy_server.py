@@ -23,7 +23,7 @@ while True:
     # if Raw in packet:
     #     load = packet[Raw].load
     #     print(load)
-    print(packet.summary())
+    print(p.summary())
     if True: # p['TCP'].flags == 'S':
         ip = IP(src=p['IP'].dst, dst=p['IP'].src)/TCP(
         flags='SA',
