@@ -55,7 +55,7 @@ class Registrar():
                         registered = False
                         data = json.loads(data.decode())
                         if data["hostname"]:
-                            for host in self.workers:
+                            for host in workers_list:
                                 if data["hostname"] == host["hostname"]:
                                     registered = True
 
@@ -63,7 +63,6 @@ class Registrar():
                         if not registered:
                             workers_list.append(data)
                             print(workers_list)
-                            self.workers = workers_list
                             conn.send(str(workers_list).encode('utf-8'))
                     except Exception as e:
                         conn.send(str(e).encode('utf-8'))
