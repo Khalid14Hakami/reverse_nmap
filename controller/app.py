@@ -55,7 +55,7 @@ class MyPrompt(Cmd):
             print(result)
         # sys.exit(2) 
 
-    def connect(configs):
+    def connect(self, configs):
         HOST = configs['HOST'] # socket.gethostname() 
         PORT = 5432  # Port to listen on (non-privileged ports are > 1023)
         ans = ""
