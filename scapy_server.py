@@ -41,7 +41,7 @@ while True:
         for state in test_istruction["states"]:
             if eval(state[0]):
                 print('this is test')
-                print(state[1])
+                print(state)
 
                 for step in ast.literal_eval(state[1]):
                     print(step)
