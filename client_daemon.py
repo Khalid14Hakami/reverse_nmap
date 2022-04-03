@@ -97,29 +97,36 @@ class ClientDaemon(daemon):
         #             ("p['TCP'].flags == 'S'", "[0]"), 
         #             ]
         # }
+        try:
+            while True:
+                # packet = s.recvfrom(65535)[0].decode()    #decode packet
+                # print(packet)   #print packet to read
+                packet = s.recv(2000)
+                self.logger.debug('this what we got:')
+                self.logger.debug("".join(map(chr, bytes(packet[0]))))
+                p = packet[0]
+                self.logger.debug(type(packet))
+                p = IP(packet)
+                # if Raw in packet:
+                #     load = packet[Raw].load
+                #     print(load)
+                self.logger.debug(p.summary())
+                if True: # p['TCP'].flags == 'S':
 
-        while True:
-            # packet = s.recvfrom(65535)[0].decode()    #decode packet
-            # print(packet)   #print packet to read
-            packet = s.recv(2000)
-            self.logger.debug('this what we got:')
-            self.logger.debug("".join(map(chr, bytes(packet[0]))))
-            p = packet[0]
-            self.logger.debug(type(packet))
-            p = IP(packet)
-            # if Raw in packet:
-            #     load = packet[Raw].load
-            #     print(load)
-            self.logger.debug(p.summary())
-            if True: # p['TCP'].flags == 'S':
-                for state in test_istruction["states"]:
-                    if eval(state[0]):
-                        for step in ast.literal_eval(state[1]):
-                            self.logger.debug(step)
-                            exec(test_istruction["steps"][int(step)])
+                    for state in test_istruction["states"]:
+                        self.logger.debug(state)
+                        if eval(state[0]):
+                            self.logger.debug(state[0])
+
+                            for step in ast.literal_eval(state[1]):
+                                self.logger.debug(step)
+                                exec(test_istruction["steps"][int(step)])
 
 
-                    self.logger.debug ("%s\n" % (p[IP].summary()))
+                        self.logger.debug ("%s\n" % (p[IP].summary()))
+        except Exception as e:
+            print(e)
+            self.logger.exception(e)
         
     
     def execute(self, json_command):
