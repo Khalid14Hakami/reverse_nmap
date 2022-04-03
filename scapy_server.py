@@ -29,7 +29,7 @@ dport=p['TCP'].sport,
 seq = p['TCP'].seq ,
 ack = p['TCP'].seq + 1,
 )
-pair = sr1(ip, verbose=30)"""
+pair = sr1(ip, verbose=30, timeout= 3)"""
     ], 
     "states": [
             ("p['TCP'].flags == 'S'", "[0]"), 
