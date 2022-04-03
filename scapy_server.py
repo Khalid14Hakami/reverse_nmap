@@ -46,7 +46,7 @@ while True:
                 print(state[0])
                 print(state[1])
 
-                for step in state[1]:
+                for step in ast.literal_eval(state[1]):
                     print(step)
                     exec(test_istruction["steps"][int(step)])
 
