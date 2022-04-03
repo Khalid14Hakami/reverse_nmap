@@ -20,7 +20,7 @@ ack = p['TCP'].seq + 1,
 )
 pair = sr1(ip, verbose=30)"""
     ], 
-    "states": ("p['TCP'].flags == 'S'", [1, 2])
+    "states": "(\"p['TCP'].flags == 'S'\", [1, 2])"
 }
 
 while True:
