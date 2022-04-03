@@ -79,7 +79,9 @@ class ClientDaemon(daemon):
                 data = {"hostname": socket.gethostname()}
                 s.sendall(bytes(json.dumps(data),encoding="utf-8"))
                 ans = s.recv(1024)
-                ans = json.loads(ans.decode())
+                self.logger.debug(ans)
+                self.logger.debug(ans.decode)
+                ans = json.loads(ans.decode().replace("\'", "\""))
                 self.logger.exception(ans)
                 for host in ans:
                     if host["hostname"] == socket.gethostname():
