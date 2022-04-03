@@ -77,7 +77,7 @@ class ClientDaemon(daemon):
                 self.logger.debug(s)
         
                 data = {"hostname": socket.gethostname()}
-                s.sendall(json.dumps(data))
+                s.sendall(bytes(json.dumps(data),encoding="utf-8"))
                 ans = s.recv(1024)
                 ans = json.loads(ans.decode())
                 self.logger.exception(ans)
