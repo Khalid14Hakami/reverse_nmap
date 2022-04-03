@@ -15,6 +15,8 @@ class MyPrompt(Cmd):
         
 
     def do_run_test(self, inp):
+        print(os.path.isfile(inp))
+        print(os.path.splitext(inp)[1])
         if  os.path.isfile(inp) and os.path.splitext(inp)[1] == '.json':
             # load json from file
             scenario = self.get_scenario(inp)
@@ -29,7 +31,7 @@ class MyPrompt(Cmd):
                 trigger_clients(clients_settings)
         else:
             print ("file format not suported")
-            sys.exit(2)
+            # sys.exit(2)
         sys.exit(0)
         print(reg.get_workers())
 
