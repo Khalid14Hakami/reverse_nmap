@@ -54,8 +54,8 @@ class Registrar():
                     try:
 
                         data = json.loads(data.decode())
-                        if data['hostname']:
-                            data['ip']= conn.getpeername()[0]
+                        if data["hostname"]:
+                            data["ip"]= conn.getpeername()[0]
                         workers_list.append(data)
                         print(workers_list)
                         self.workers = workers_list
