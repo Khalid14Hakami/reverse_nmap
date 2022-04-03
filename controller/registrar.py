@@ -53,7 +53,7 @@ class Registrar():
                 if data:
                     try:
 
-                        data = json.load(data.decode())
+                        data = json.loads(data.decode())
                         if data['hostname']:
                             data['ip']= conn.getsockname()[0]
                         workers_list.append(data)
