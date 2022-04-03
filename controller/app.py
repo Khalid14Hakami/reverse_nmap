@@ -1,5 +1,6 @@
 from registrar import *
 from cmd import Cmd
+import os 
  
 class MyPrompt(Cmd):
     def do_exit(self, inp):
