@@ -11,7 +11,7 @@ class ClientDaemon(daemon):
     logging_level = 30 
     logging.basicConfig(level = logging.DEBUG, filename = '/tmp/client_daemon.log', filemode='w')
     logger = logging.getLogger('client')
-
+    hostname = socket.gethostname()
     def run(self):
         self.connect()
 
@@ -75,8 +75,8 @@ class ClientDaemon(daemon):
                 self.logger.debug(' registration for on port '+ str(socket.gethostname()))
                 self.logger.debug(connection)
                 self.logger.debug(s)
-        
-                data = {"hostname": socket.gethostname()}
+                
+                data = {"hostname": self.hostname}
                 s.sendall(bytes(json.dumps(data),encoding="utf-8"))
                 ans = s.recv(1024)
                 self.logger.debug(ans)
@@ -85,8 +85,9 @@ class ClientDaemon(daemon):
                 self.logger.exception(ans)
                 for host in ans:
                     self.logger.exception(host["hostname"])
+                    self.logger.exception(" >>>>>> socket.gethostname(): ")
                     self.logger.exception(socket.gethostname())
-                    if host["hostname"] == socket.gethostname():
+                    if host["hostname"] == self.hostname:
                         break
                 sleep(5)
             return True
