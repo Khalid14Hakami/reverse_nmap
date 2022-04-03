@@ -7,6 +7,7 @@ from atexit import register
 import socket
 import select
 import multiprocessing
+import json
 
 PORT=4444
 HOST=""
@@ -54,7 +55,7 @@ class Registrar():
 
                         data = json.load(data.decode())
                         if data['hostname']:
-                            data['ip']: addr
+                            data['ip']= conn.getsockname()[0]
                         workers_list.append(data)
                         print(workers_list)
                         self.workers = workers_list
