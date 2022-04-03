@@ -60,7 +60,7 @@ class ClientDaemon(daemon):
             s.close()
             return data
 
-    def launch_Server(test_istruction):
+    def launch_Server(self, test_istruction):
         
 
 
