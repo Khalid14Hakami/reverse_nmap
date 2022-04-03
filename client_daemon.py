@@ -60,7 +60,7 @@ class ClientDaemon(daemon):
             s.close()
             return data
 
-    def launch_server(self, test_istruction, logger):
+    def launch_server(self, test_istruction):
         
 
 
@@ -101,30 +101,30 @@ class ClientDaemon(daemon):
             # packet = s.recvfrom(65535)[0].decode()    #decode packet
             # print(packet)   #print packet to read
             packet = s.recv(2000)
-            logger.debug('this what we got:')
-            logger.debug("".join(map(chr, bytes(packet[0]))))
+            self.logger.debug('this what we got:')
+            self.logger.debug("".join(map(chr, bytes(packet[0]))))
             p = packet[0]
             self.logger.debug(type(packet))
             p = IP(packet)
             # if Raw in packet:
             #     load = packet[Raw].load
             #     print(load)
-            logger.debug(p.summary())
+            self.logger.debug(p.summary())
             if True: # p['TCP'].flags == 'S':
                 for state in test_istruction["states"]:
                     if eval(state[0]):
                         for step in ast.literal_eval(state[1]):
-                            logger.debug(step)
+                            self.logger.debug(step)
                             exec(test_istruction["steps"][int(step)])
 
 
-                    logger.debug ("%s\n" % (p[IP].summary()))
+                    self.logger.debug ("%s\n" % (p[IP].summary()))
         
     
     def execute(self, json_command):
         file = json_command["script_path"]
         test = json_command["test_istruction"]
-        test_server = multiprocessing.Process(target=self.launch_server, args=[test, self.logger])
+        test_server = multiprocessing.Process(target=self.launch_server, args=[test])
         try:
             # subprocess.Popen(file)
             test_server.start()
