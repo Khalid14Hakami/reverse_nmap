@@ -23,7 +23,6 @@ pair = sr1(ip, verbose=30)"""
     "states": ("p['TCP'].flags == 'S'", [1, 2])
 }
 
-test_istruction = json.loads(test_istruction)
 while True:
     # packet = s.recvfrom(65535)[0].decode()    #decode packet
     # print(packet)   #print packet to read
@@ -37,8 +36,10 @@ while True:
     #     load = packet[Raw].load
     #     print(load)
     print(p.summary())
+
+    states = json.loads(test_istruction["states"])
     if True: # p['TCP'].flags == 'S':
-        for state in test_istruction["states"]:
+        for state in states:
             if eval(state[0]):
                 print("steps")
                 print(state[1])
