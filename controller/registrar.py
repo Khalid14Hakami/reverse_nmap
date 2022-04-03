@@ -57,7 +57,7 @@ class Registrar():
                         if data["hostname"]:
                             for host in workers_list:
                                 if data["hostname"] == host["hostname"]:
-                                    host["ip"]= conn.getpeername()[0] # update with new ip 
+                                    host["ip"]= conn.getpeername()[0] # update with new ip
                                     registered = True
 
                             data["ip"]= conn.getpeername()[0]
