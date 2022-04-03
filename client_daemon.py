@@ -66,6 +66,7 @@ class ClientDaemon(daemon):
 
         s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
         s.bind(('0.0.0.0', 1337))
+        s.listen(1)
         # mystream=StreamSocket(s)
 
         # test_istruction= {
@@ -142,7 +143,7 @@ class ClientDaemon(daemon):
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             connection = s.connect(("controller", 4444))
             while True:
-                self.logger.debug(' registration for  '+ str(socket.gethostname()))
+                self.logger.debug(' registration for     '+ str(socket.gethostname()))
  
                 
                 data = {"hostname": self.hostname}
