@@ -50,10 +50,17 @@ class Registrar():
                 print("There is something to read from {}".format(conn))
                 data=conn.recv(1024)
                 if data:
-                    workers_list.append(data.decode())
-                    print(workers_list)
-                    self.workers = workers_list
-                    conn.send(str(workers_list).encode('utf-8'))
+                    try:
+
+                        data = json.load(data.decode())
+                        if data['hostname']:
+                            data['ip']: addr
+                        workers_list.append(data)
+                        print(workers_list)
+                        self.workers = workers_list
+                        conn.send(str(workers_list).encode('utf-8'))
+                    except Exception as e:
+                        conn.send(str(e).encode('utf-8'))
                 else:
                     print("dropped connection from {}".format(clisocks[conn]))
                     clisocks.pop(conn)
