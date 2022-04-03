@@ -21,7 +21,7 @@ ack = p['TCP'].seq + 1,
 )
 pair = sr1(ip, verbose=30)"""
     ], 
-    "states": ("p['TCP'].flags == 'S'", "[1, 2]")
+    "states": [("p['TCP'].flags == 'S'", "[1, 2]")]
 }
 
 while True:
@@ -43,7 +43,7 @@ while True:
                 print('this is test')
                 print(state)
 
-                for step in ast.literal_eval(state[1]):
+                for step in state[1]:
                     print(step)
                     exec(test_istruction["steps"][int(step)])
 
