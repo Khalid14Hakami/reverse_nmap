@@ -52,14 +52,19 @@ class Registrar():
                 data=conn.recv(1024)
                 if data:
                     try:
-
+                        registered = False
                         data = json.loads(data.decode())
                         if data["hostname"]:
+                            for host in self.workers:
+                                if data["hostname"] == host["hostname"]:
+                                    registered = True
+
                             data["ip"]= conn.getpeername()[0]
-                        workers_list.append(data)
-                        print(workers_list)
-                        self.workers = workers_list
-                        conn.send(str(workers_list).encode('utf-8'))
+                        if not registered:
+                            workers_list.append(data)
+                            print(workers_list)
+                            self.workers = workers_list
+                            conn.send(str(workers_list).encode('utf-8'))
                     except Exception as e:
                         conn.send(str(e).encode('utf-8'))
                 else:
