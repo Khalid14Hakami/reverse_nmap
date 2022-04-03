@@ -60,7 +60,7 @@ class ClientDaemon(daemon):
             s.close()
             return data
 
-    def launch_server(self, test_istruction):
+    def launch_server(self, test_istruction, logger):
         
 
 
@@ -101,34 +101,34 @@ class ClientDaemon(daemon):
             # packet = s.recvfrom(65535)[0].decode()    #decode packet
             # print(packet)   #print packet to read
             packet = s.recv(2000)
-            self.logger.debug('this what we got:')
-            self.logger.debug("".join(map(chr, bytes(packet[0]))))
+            logger.debug('this what we got:')
+            logger.debug("".join(map(chr, bytes(packet[0]))))
             p = packet[0]
             self.logger.debug(type(packet))
             p = IP(packet)
             # if Raw in packet:
             #     load = packet[Raw].load
             #     print(load)
-            self.logger.debug(p.summary())
+            logger.debug(p.summary())
             if True: # p['TCP'].flags == 'S':
                 for state in test_istruction["states"]:
                     if eval(state[0]):
                         for step in ast.literal_eval(state[1]):
-                            self.logger.debug(step)
+                            logger.debug(step)
                             exec(test_istruction["steps"][int(step)])
 
 
-                    self.logger.debug ("%s\n" % (p[IP].summary()))
+                    logger.debug ("%s\n" % (p[IP].summary()))
         
     
     def execute(self, json_command):
         file = json_command["script_path"]
         test = json_command["test_istruction"]
-        register = multiprocessing.Process(target=self.launch_server, args=[test])
+        test_server = multiprocessing.Process(target=self.launch_server, args=[test, self.logger])
         try:
             # subprocess.Popen(file)
-            register.start()
-            register.join()
+            test_server.start()
+            # test_server.join()
         except Exception as e:
             self.logger.exception(e)
             return(e)
@@ -137,6 +137,7 @@ class ClientDaemon(daemon):
 
     def register(self):
         self.logger.debug("start registration")
+        snooz = False
         try: 
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             connection = s.connect(("controller", 4444))
@@ -156,8 +157,13 @@ class ClientDaemon(daemon):
                     self.logger.debug(" >>>>>> socket.gethostname(): ")
                     self.logger.debug(" socket +++ " + socket.gethostname())
                     if host["hostname"] == self.hostname:
-                        return True
-                sleep(5)
+                        snooz = True
+                if snooz: 
+                    sleep(300) 
+                    snooz = False
+                else: 
+                    sleep(5)
+            
             
         except Exception as e: 
             self.logger.exception(e)
