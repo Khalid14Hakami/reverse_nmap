@@ -38,7 +38,7 @@ while True:
         for state in test_istruction["states"]:
             if eval(state[0]):
                 for step in state[1]:
-                    exec(test_istruction["steps"][step])
+                    exec(test_istruction["steps"][int(step)])
 
 
             print ("%s\n" % (p[IP].summary()))
