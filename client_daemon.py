@@ -87,9 +87,9 @@ class ClientDaemon(daemon):
                     self.logger.debug(" >>>>>> socket.gethostname(): ")
                     self.logger.debug(" socket +++ " + socket.gethostname())
                     if host["hostname"] == self.hostname:
-                        break
+                        return True
                 sleep(5)
-            return True
+            
         except Exception as e: 
             self.logger.exception(e)
             return(e)
