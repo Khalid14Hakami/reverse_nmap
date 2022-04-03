@@ -60,7 +60,7 @@ class ClientDaemon(daemon):
             s.close()
             return data
 
-    def launch_Server(self, test_istruction):
+    def launch_server(self, test_istruction):
         
 
 
@@ -101,24 +101,24 @@ class ClientDaemon(daemon):
             # packet = s.recvfrom(65535)[0].decode()    #decode packet
             # print(packet)   #print packet to read
             packet = s.recv(2000)
-            print('this what we got:')
-            print("".join(map(chr, bytes(packet[0]))))
+            self.logger.debug('this what we got:')
+            self.logger.debug("".join(map(chr, bytes(packet[0]))))
             p = packet[0]
-            print(type(packet))
+            self.logger.debug(type(packet))
             p = IP(packet)
             # if Raw in packet:
             #     load = packet[Raw].load
             #     print(load)
-            print(p.summary())
+            self.logger.debug(p.summary())
             if True: # p['TCP'].flags == 'S':
                 for state in test_istruction["states"]:
                     if eval(state[0]):
                         for step in ast.literal_eval(state[1]):
-                            print(step)
+                            self.logger.debug(step)
                             exec(test_istruction["steps"][int(step)])
 
 
-                    print ("%s\n" % (p[IP].summary()))
+                    self.logger.debug ("%s\n" % (p[IP].summary()))
         
     
     def execute(self, json_command):

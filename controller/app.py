@@ -32,7 +32,7 @@ class MyPrompt(Cmd):
         else:
             print ("file format not suported")
             # sys.exit(2)
-        sys.exit(0)
+        # sys.exit(0)
         print(reg.get_workers())
 
 
