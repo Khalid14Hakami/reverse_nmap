@@ -1,6 +1,7 @@
 import socket
 from scapy.all import *
 import json
+import ast
 
 s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
 s.bind(('0.0.0.0', 1337))
@@ -20,7 +21,7 @@ ack = p['TCP'].seq + 1,
 )
 pair = sr1(ip, verbose=30)"""
     ], 
-    "states": "(\"p['TCP'].flags == 'S'\", [1, 2])"
+    "states": ("p['TCP'].flags == 'S'", [1, 2])
 }
 
 while True:
@@ -36,14 +37,11 @@ while True:
     #     load = packet[Raw].load
     #     print(load)
     print(p.summary())
-
-    states = json.loads(test_istruction["states"])
     if True: # p['TCP'].flags == 'S':
-        for state in states:
+        for state in test_istruction["states"]:
             if eval(state[0]):
-                print("steps")
-                print(state[1])
-                for step in list(state[1]):
+  
+                for step in ast.literal_eval(state[1]):
                     print(step)
                     exec(test_istruction["steps"][int(step)])
 
