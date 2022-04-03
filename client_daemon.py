@@ -69,20 +69,20 @@ class ClientDaemon(daemon):
     def register(self):
         self.logger.exception("start registration")
         try: 
-            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                    connection = s.connect(("controller", 4444))
-                    while True:
-                        
-                        data = {"hostname": socket.gethostname()}
-                        connection.sendall(data.enode())
-                        ans = connection.recv(1024)
-                        ans = json.loads(ans.decode())
-                        self.logger.exception(ans)
-                        for host in ans:
-                            if host["hostname"] == socket.gethostname():
-                                break
-                        sleep(5)
-                    return True
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            connection = s.connect(("controller", 4444))
+            while True:
+                
+                data = {"hostname": socket.gethostname()}
+                connection.sendall(data.enode())
+                ans = connection.recv(1024)
+                ans = json.loads(ans.decode())
+                self.logger.exception(ans)
+                for host in ans:
+                    if host["hostname"] == socket.gethostname():
+                        break
+                sleep(5)
+            return True
         except Exception as e: 
             self.logger.exception(e)
             return(e)
