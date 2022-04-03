@@ -19,9 +19,24 @@ dport=p['TCP'].sport,
 seq = 0,
 ack = p['TCP'].seq + 1,
 )
+pair = sr1(ip, verbose=30)""",
+"""
+print('this is a step 2', p['TCP'].dport)
+ip = IP(src=p['IP'].dst, dst=p['IP'].src)/TCP(
+flags='A',
+sport=p['TCP'].dport,
+dport=p['TCP'].sport,
+seq = p['TCP'].seq ,
+ack = p['TCP'].seq + 1,
+)
 pair = sr1(ip, verbose=30)"""
     ], 
-    "states": [("p['TCP'].flags == 'S'", "[0]")]
+    "states": [
+            ("p['TCP'].flags == 'S'", "[0]"), 
+            ("p['TCP'].flags == 'P'", "[0]"),
+            ("p['TCP'].flags == 'PA'", "[1]")
+
+            ]
 }
 
 while True:
