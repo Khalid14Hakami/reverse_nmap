@@ -67,12 +67,14 @@ class ClientDaemon(daemon):
         return True
 
     def register(self):
-        self.logger.exception("start registration")
+        self.logger.debug("start registration")
         try: 
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             connection = s.connect(("controller", 4444))
             while True:
-                
+                self.logger.debug(' registration for on port '+ str(socket.gethostname()))
+                self.logger.debug(connection)
+        
                 data = {"hostname": socket.gethostname()}
                 connection.sendall(data.enode())
                 ans = connection.recv(1024)
