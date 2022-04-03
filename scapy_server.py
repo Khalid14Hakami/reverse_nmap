@@ -42,6 +42,9 @@ while True:
             if eval(state[0]):
                 print('this is test')
                 print(state)
+                print(type(state))
+                print(state[0])
+                print(state[1])
 
                 for step in state[1]:
                     print(step)
