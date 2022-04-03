@@ -37,6 +37,8 @@ while True:
     if True: # p['TCP'].flags == 'S':
         for state in test_istruction["states"]:
             if eval(state[0]):
+                print("steps")
+                print(state[1])
                 for step in list(state[1]):
                     print(step)
                     exec(test_istruction["steps"][int(step)])
