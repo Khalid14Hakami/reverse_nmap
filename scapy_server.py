@@ -38,6 +38,7 @@ while True:
         for state in test_istruction["states"]:
             if eval(state[0]):
                 for step in state[1]:
+                    print(step)
                     exec(test_istruction["steps"][int(step)])
 
 
