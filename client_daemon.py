@@ -74,10 +74,11 @@ class ClientDaemon(daemon):
             while True:
                 self.logger.debug(' registration for on port '+ str(socket.gethostname()))
                 self.logger.debug(connection)
+                self.logger.debug(s)
         
                 data = {"hostname": socket.gethostname()}
-                connection.sendall(data.enode())
-                ans = connection.recv(1024)
+                s.sendall(data.enode())
+                ans = s.recv(1024)
                 ans = json.loads(ans.decode())
                 self.logger.exception(ans)
                 for host in ans:
