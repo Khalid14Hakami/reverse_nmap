@@ -84,6 +84,8 @@ class ClientDaemon(daemon):
                 ans = json.loads(ans.decode().replace("\'", "\""))
                 self.logger.exception(ans)
                 for host in ans:
+                    self.logger.exception(host["hostname"])
+                    self.logger.exception(socket.gethostname())
                     if host["hostname"] == socket.gethostname():
                         break
                 sleep(5)
