@@ -69,7 +69,7 @@ class ClientDaemon(daemon):
     def register(self):
         self.logger.exception("start registration")
         try: 
-            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             connection = s.connect(("controller", 4444))
             while True:
                 
