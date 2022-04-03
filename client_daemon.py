@@ -142,9 +142,8 @@ class ClientDaemon(daemon):
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             connection = s.connect(("controller", 4444))
             while True:
-                self.logger.debug(' registration for on port '+ str(socket.gethostname()))
-                self.logger.debug(connection)
-                self.logger.debug(s)
+                self.logger.debug(' registration for  '+ str(socket.gethostname()))
+ 
                 
                 data = {"hostname": self.hostname}
                 s.sendall(bytes(json.dumps(data),encoding="utf-8"))

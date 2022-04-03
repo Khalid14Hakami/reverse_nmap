@@ -27,8 +27,8 @@ class MyPrompt(Cmd):
             server_status = self.prepare_server(server_settings)
             # snfiffer_status = prepare_sniffer(sniffer_settings)
 
-            if server_status and snfiffer_status:
-                trigger_clients(clients_settings)
+            # if server_status and snfiffer_status:
+            #     trigger_clients(clients_settings)
         else:
             print ("file format not suported")
             # sys.exit(2)
@@ -48,11 +48,12 @@ class MyPrompt(Cmd):
         by contacting the server daemon
         """
         result = self.connect(server_settings)
-        if result['message'] == True:
+        if result:
             return True
         else:
             print('server did not start successfully')
             print(result)
+            return False
         # sys.exit(2) 
 
     def connect(self, configs):
