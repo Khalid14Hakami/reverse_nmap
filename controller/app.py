@@ -86,6 +86,8 @@ class MyPrompt(Cmd):
         HOST = configs['HOST'] # socket.gethostname() 
         PORT = 5432  # Port to listen on (non-privileged ports are > 1023)
         ans = ""
+        print(f"trting to connecnt to ...  {HOST}")
+
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 s.connect((HOST, PORT))
