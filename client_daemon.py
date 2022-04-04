@@ -108,7 +108,7 @@ class ClientDaemon(daemon):
                 # packet = s.recvfrom(65535)[0].decode()    #decode packet
                 # print(packet)   #print packet to read
                 packet = s.recv(2000)
-                self.logger.debug('this what we got:')
+                # self.logger.debug('this what we got:')
                 self.logger.debug("".join(map(chr, bytes(packet[0]))))
                 p = packet[0]
                 self.logger.debug(type(packet))
