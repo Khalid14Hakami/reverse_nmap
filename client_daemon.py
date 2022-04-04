@@ -129,12 +129,13 @@ class ClientDaemon(daemon):
     def register(self):
         self.logger.debug("start registration")
         snooz = False
-        try: 
-            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            connection = s.connect(("controller", 4444))
-            while True:
+        while True:
+            try: 
+            
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                connection = s.connect(("controller", 4444))
                 self.logger.debug(' registration for     '+ str(socket.gethostname()))
- 
+
                 
                 data = {"hostname": self.hostname}
                 s.sendall(bytes(json.dumps(data),encoding="utf-8"))
@@ -154,11 +155,11 @@ class ClientDaemon(daemon):
                     snooz = False
                 else: 
                     sleep(5)
+                
             
-            
-        except Exception as e: 
-            self.logger.exception(e)
-            return(e)
+            except Exception as e: 
+                self.logger.exception(e)
+                return(e)
  
 if __name__ == "__main__":
 
