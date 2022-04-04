@@ -68,7 +68,7 @@ class ClientDaemon(daemon):
 
         s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
         s.bind(('0.0.0.0', 1337))
-        s.listen(1)
+        # s.listen(1)
         # mystream=StreamSocket(s)
 
         # test_istruction= {
@@ -144,7 +144,7 @@ class ClientDaemon(daemon):
         try:
             # subprocess.Popen(file)
             test_server.start()
-            # test_server.join()
+            test_server.join()
         except Exception as e:
             self.logger.exception(e)
             return(e)
