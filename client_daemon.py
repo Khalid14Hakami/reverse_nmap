@@ -102,7 +102,7 @@ class ClientDaemon(daemon):
 
 
                     logger.debug ("%s\n" % (p[IP].summary()))
-                count = count + 1 
+                counter = counter + 1 
                         
         except Exception as e:
             print(e)
