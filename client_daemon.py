@@ -147,6 +147,7 @@ class ClientDaemon(daemon):
                     self.logger.debug(" socket +++ " + socket.gethostname())
                     if host["hostname"] == self.hostname:
                         snooz = True
+                        return True
                 if snooz: 
                     sleep(300) 
                     snooz = False
