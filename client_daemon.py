@@ -97,6 +97,12 @@ class ClientDaemon(daemon):
         #             ("p['TCP'].flags == 'S'", "[0]"), 
         #             ]
         # }
+        self.logger.debug(">>>>>>>>>>>>>>>>>>>")
+
+        self.logger.debug(test_istruction)
+
+        self.logger.debug("<<<<<<<<<<<<<<<<<<<")
+
         try:
             while True:
                 # packet = s.recvfrom(65535)[0].decode()    #decode packet
