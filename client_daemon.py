@@ -123,7 +123,7 @@ class ClientDaemon(daemon):
 
                     for state in test_istruction["states"]:
                         logger.debug(state)
-                        if eval(state[0]):
+                        if ast.literal_eval(state[0]):
                             logger.debug(state[0])
 
                             for step in ast.literal_eval(state[1]):
