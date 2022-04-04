@@ -111,10 +111,10 @@ class ClientDaemon(daemon):
     def execute(self, json_command):
         
         try:
-            if json_command["script_path"]:
+            if "script_path" in json_command:
                 file = json_command["script_path"]
                 subprocess.Popen(file)
-            elif json_command["test_istruction"]:
+            elif "test_istruction" in json_command:
                 test = json_command["test_istruction"]
                 test_server = multiprocessing.Process(target=self.launch_server, args=[test])
                 test_server.start()
