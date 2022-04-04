@@ -25,7 +25,7 @@ class MyPrompt(Cmd):
             sniffer_settings = scenario['sniffer_settings']
 
             server_status = self.prepare_server(server_settings)
-            snfiffer_status = self.prepare_sniffer(sniffer_settings)
+            # snfiffer_status = self.prepare_sniffer(sniffer_settings)
 
             # if server_status and snfiffer_status:
             #     trigger_clients(clients_settings)
