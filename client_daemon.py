@@ -37,16 +37,16 @@ class ClientDaemon(daemon):
                         print(f"Connected by {addr}")
                         while True:
                             data = conn.recv(1024)
-                            if not data:
-                                break
+                            # if not data:
+                            #     break
                             
                             data = data.decode("utf-8")
 
                             self.logger.debug('received the following:')
                             self.logger.debug(data)
                             data = json.loads(data)
-                            
-                            result = self.execute(data)
+                            if data:
+                                result = self.execute(data)
                             
                             replay = { "message": result}
                             replay = json.dumps(replay)

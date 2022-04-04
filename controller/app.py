@@ -61,7 +61,7 @@ class MyPrompt(Cmd):
         this function contact the sniffer daemon to prepare sniffing based on the scenario
         """
         result = self.connect(sniffer_setting)
-        if result['message'] == True:
+        if result:
             return True
         else:
             print('sniffer did not start successfully')
@@ -76,7 +76,7 @@ class MyPrompt(Cmd):
         for setting in clients_settings:
             print(setting)
             result = self.connect(setting)
-            if result['message'] == True:
+            if result:
                 pass 
             else:
                 print('server did not start successfully')
