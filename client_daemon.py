@@ -121,7 +121,7 @@ class ClientDaemon(daemon):
                 logger.debug(p.summary())
                 if True: # p['TCP'].flags == 'S':
 
-                    for state in test_istruction["states"]:
+                    for state in ast.literal_eval(test_istruction["states"]):
                         logger.debug(state)
                         if ast.literal_eval(state[0]):
                             logger.debug(state[0])
