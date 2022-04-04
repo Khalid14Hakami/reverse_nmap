@@ -61,7 +61,9 @@ class ClientDaemon(daemon):
             return data
 
     def launch_server(self, test_istruction):
-        
+        logging_level = 30 
+        logging.basicConfig(level = logging.DEBUG, filename = '/tmp/server.log', filemode='w')
+        logger = logging.getLogger('server')
 
 
         s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
@@ -97,42 +99,42 @@ class ClientDaemon(daemon):
         #             ("p['TCP'].flags == 'S'", "[0]"), 
         #             ]
         # }
-        self.logger.debug(">>>>>>>>>>>>>>>>>>>")
+        logger.debug(">>>>>>>>>>>>>>>>>>>")
 
-        self.logger.debug(test_istruction)
+        logger.debug(test_istruction)
 
-        self.logger.debug("<<<<<<<<<<<<<<<<<<<")
+        logger.debug("<<<<<<<<<<<<<<<<<<<")
 
         try:
             while True:
                 # packet = s.recvfrom(65535)[0].decode()    #decode packet
                 # print(packet)   #print packet to read
                 packet = s.recv(2000)
-                # self.logger.debug('this what we got:')
-                self.logger.debug("".join(map(chr, bytes(packet[0]))))
+                logger.debug('this what we got:')
+                logger.debug("".join(map(chr, bytes(packet[0]))))
                 p = packet[0]
-                self.logger.debug(type(packet))
+                logger.debug(type(packet))
                 p = IP(packet)
                 # if Raw in packet:
                 #     load = packet[Raw].load
                 #     print(load)
-                self.logger.debug(p.summary())
+                logger.debug(p.summary())
                 if True: # p['TCP'].flags == 'S':
 
                     for state in test_istruction["states"]:
-                        self.logger.debug(state)
+                        logger.debug(state)
                         if eval(state[0]):
-                            self.logger.debug(state[0])
+                            logger.debug(state[0])
 
                             for step in ast.literal_eval(state[1]):
-                                self.logger.debug(step)
+                                logger.debug(step)
                                 exec(test_istruction["steps"][int(step)])
 
 
-                        self.logger.debug ("%s\n" % (p[IP].summary()))
+                        logger.debug ("%s\n" % (p[IP].summary()))
         except Exception as e:
             print(e)
-            self.logger.exception(e)
+            logger.exception(e)
         
     
     def execute(self, json_command):
