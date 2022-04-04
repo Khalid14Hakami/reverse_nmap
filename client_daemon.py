@@ -45,8 +45,9 @@ class ClientDaemon(daemon):
 
                             self.logger.debug('received the following:')
                             self.logger.debug(data)
-                            data = json.loads(data)
-                            if data:
+                            
+                            if len(data)>5:
+                                data = json.loads(data)
                                 result = self.execute(data)
                             
                             replay = { "message": result}
