@@ -25,7 +25,7 @@ class MyPrompt(Cmd):
             sniffer_settings = scenario['sniffer_settings']
 
             server_status = self.prepare_server(server_settings)
-            # snfiffer_status = prepare_sniffer(sniffer_settings)
+            snfiffer_status = self.prepare_sniffer(sniffer_settings)
 
             # if server_status and snfiffer_status:
             #     trigger_clients(clients_settings)
@@ -56,6 +56,32 @@ class MyPrompt(Cmd):
             return False
         # sys.exit(2) 
 
+    def prepare_sniffer(self, sniffer_setting):
+        """
+        this function contact the sniffer daemon to prepare sniffing based on the scenario
+        """
+        result = self.connect(sniffer_setting)
+        if result['message'] == True:
+            return True
+        else:
+            print('sniffer did not start successfully')
+            print(result)
+            sys.exit(2)
+
+    def trigger_clients(self, clients_settings):
+        """
+            this contact clients' deamons to 
+            trigger scenario communication to target server
+        """
+        for setting in clients_settings:
+            print(setting)
+            result = self.connect(setting)
+            if result['message'] == True:
+                pass 
+            else:
+                print('server did not start successfully')
+                print(result)
+                sys.exit(2)
     def connect(self, configs):
         HOST = configs['HOST'] # socket.gethostname() 
         PORT = 5432  # Port to listen on (non-privileged ports are > 1023)
@@ -67,10 +93,7 @@ class MyPrompt(Cmd):
 
                 print(f"Connected to {HOST}")
 
-                data = {
-                    "script_path": configs['script_path'],
-                    "test_istruction": configs['test_istruction']
-                }
+                data = configs
                 data = json.dumps(data)
                 s.sendall(bytes(data,encoding="utf-8"))
 

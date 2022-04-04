@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
  
+from itertools import count
 import sys, socket, json, logging, os
 from time import sleep
 from daemon import daemon
@@ -69,47 +70,14 @@ class ClientDaemon(daemon):
 
         s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
         s.bind(('0.0.0.0', 1337))
-        # s.listen(1)
-        # mystream=StreamSocket(s)
-
-#         test_istruction= {
-#             "condition": "p['TCP'].dport == 80",
-#             "steps": [
-#                 """
-# print('this is a test', p['TCP'].dport)
-# ip = IP(src=p['IP'].dst, dst=p['IP'].src)/TCP(
-# flags='SA',
-# sport=p['TCP'].dport,
-# dport=p['TCP'].sport,
-# seq = 0,
-# ack = p['TCP'].seq + 1,
-# )
-# pair = sr1(ip, verbose=30)""",
-# """
-# print('this is a step 2', p['TCP'].dport)
-# ip = IP(src=p['IP'].dst, dst=p['IP'].src)/TCP(
-# flags='A',
-# sport=p['TCP'].dport,
-# dport=p['TCP'].sport,
-# seq = p['TCP'].seq ,
-# ack = p['TCP'].seq + p['TCP'].len,
-# )
-# pair = sr1(ip, verbose=30, timeout= 3)"""
-#             ], 
-#             "states": [
-#                     ("p['TCP'].flags == 'S'", "[0]"), 
-#                     ]
-#         }
+ 
         logger.debug(">>>>>>>>>>>>>>>>>>>")
-
         logger.debug(test_istruction)
-
         logger.debug("<<<<<<<<<<<<<<<<<<<")
 
         try:
-            while True:
-                # packet = s.recvfrom(65535)[0].decode()    #decode packet
-                # print(packet)   #print packet to read
+            counter = 0
+            while not eval(test_istruction["termiatin_condition"]):
                 packet = s.recv(2000)
                 logger.debug('this what we got:')
                 logger.debug("".join(map(chr, bytes(packet[0]))))
@@ -120,31 +88,35 @@ class ClientDaemon(daemon):
                 #     load = packet[Raw].load
                 #     print(load)
                 logger.debug(p.summary())
-                if True: # p['TCP'].flags == 'S':
 
-                    for state in test_istruction["states"]:
-                        logger.debug(state)
-                        if eval(state[0]):
-                            logger.debug(state[0])
+                for state in test_istruction["states"]:
+                    logger.debug(state)
+                    if eval(state[0]):
+                        logger.debug(state[0])
 
-                            for step in state[1]:
-                                logger.debug(step)
-                                exec(test_istruction["steps"][int(step)])
+                        for step in state[1]:
+                            logger.debug(step)
+                            exec(test_istruction["steps"][int(step)])
 
 
-                        logger.debug ("%s\n" % (p[IP].summary()))
+                    logger.debug ("%s\n" % (p[IP].summary()))
+                count = count + 1 
+                        
         except Exception as e:
             print(e)
             logger.exception(e)
         
     
     def execute(self, json_command):
-        file = json_command["script_path"]
-        test = json_command["test_istruction"]
-        test_server = multiprocessing.Process(target=self.launch_server, args=[test])
+        
         try:
-            # subprocess.Popen(file)
-            test_server.start()
+            if json_command["script_path"]:
+                file = json_command["script_path"]
+                subprocess.Popen(file)
+            elif json_command["test_istruction"]:
+                test = json_command["test_istruction"]
+                test_server = multiprocessing.Process(target=self.launch_server, args=[test])
+                test_server.start()
             # test_server.join()
         except Exception as e:
             self.logger.exception(e)

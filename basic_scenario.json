@@ -1,9 +1,8 @@
 {
     "server_setting": {
         "HOST": "s1",
-        "script_path": "/root/reverse_nmap/scripts/run_nc_server.sh",
         "test_istruction": 
-            { "condition": "p['TCP'].dport == 80", "steps": [ "print('this is a test', p['TCP'].dport)\nip = IP(src=p['IP'].dst, dst=p['IP'].src)/TCP( flags='SA', sport=p['TCP'].dport, dport=p['TCP'].sport, seq = 0, ack = p['TCP'].seq + 1, )\npair = sr1(ip, verbose=30)"], "states": [ ["p['TCP'].flags == 'S'", [0]] ] }
+            { "termiatin_condition": "counter>5", "steps": [ "print('this is a test', p['TCP'].dport)\nip = IP(src=p['IP'].dst, dst=p['IP'].src)/TCP( flags='SA', sport=p['TCP'].dport, dport=p['TCP'].sport, seq = 0, ack = p['TCP'].seq + 1, )\npair = sr1(ip, verbose=30)"], "states": [ ["p['TCP'].flags == 'S'", [0]] ] }
     },
     "clients_settings": [
         {
