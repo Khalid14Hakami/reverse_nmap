@@ -6,7 +6,7 @@
             "condition": "p['TCP'].dport == 80",
             "steps": ["print('this is a test', p['TCP'].dport)\\ip = IP(src=p['IP'].dst, dst=p['IP'].src)/TCP(\\flags='SA',\\sport=p['TCP'].dport,\\dport=p['TCP'].sport,\\seq = 0,\\ack = p['TCP'].seq + 1,\\)\\pair = sr1(ip, verbose=30)",
         "\\print('this is a step 2', p['TCP'].dport)\\ip = IP(src=p['IP'].dst, dst=p['IP'].src)/TCP(\\flags='A',\\sport=p['TCP'].dport,\\dport=p['TCP'].sport,\\seq = p['TCP'].seq ,\\ack = p['TCP'].seq + p['TCP'].len,\\)\\pair = sr1(ip, verbose=30, timeout= 3)"], 
-        "states": "[(p['TCP'].flags == 'S', [0])]"
+        "states": [["p['TCP'].flags == 'S'", [0]]]
         }
     },
     "clients_settings": [
