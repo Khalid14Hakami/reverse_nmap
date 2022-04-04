@@ -145,7 +145,7 @@ class ClientDaemon(daemon):
         try:
             # subprocess.Popen(file)
             test_server.start()
-            test_server.join()
+            # test_server.join()
         except Exception as e:
             self.logger.exception(e)
             return(e)
