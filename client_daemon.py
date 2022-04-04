@@ -16,6 +16,7 @@ class ClientDaemon(daemon):
     logger = logging.getLogger('client')
     hostname = socket.gethostname()
     def run(self):
+        self.register()
         self.connect()
 
     def connect(self):
@@ -192,9 +193,8 @@ if __name__ == "__main__":
 
     if len(sys.argv) == 2:
             if 'start' == sys.argv[1]:
-                    if daemon.register():
-                        daemon.start()
-                        daemon.logger.debug('daemon started')
+                    daemon.start()
+                    daemon.logger.debug('daemon started')
             elif 'stop' == sys.argv[1]:
                     daemon.stop()
             elif 'restart' == sys.argv[1]:
