@@ -21,6 +21,9 @@ class ClientDaemon(daemon):
         self.connect()
 
     def connect(self):
+        """
+        this funtion is to open a socket to receive commands from the controller 
+        """
         HOST = "" 
         PORT = 5432  # Port to listen on (non-privileged ports are > 1023)
 
