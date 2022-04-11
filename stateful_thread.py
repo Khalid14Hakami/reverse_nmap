@@ -7,7 +7,7 @@ import json
 print_lock = threading.Lock()
 
 class StatefulSocket(threading.Thread):
-    def __init__(self, queue, socket, args=(), kwargs=None):
+    def __init__(self, queue, args=(), kwargs=None):
         threading.Thread.__init__(self, args=(), kwargs=None)
         self.state = "init"
         global state_machine
@@ -15,7 +15,7 @@ class StatefulSocket(threading.Thread):
         state_machine = json.load(f)
         f.close()
         self.states = state_machine.copy()
-        self.socket = socket
+
         self.queue = queue
 
     def run(self):
@@ -29,7 +29,6 @@ class StatefulSocket(threading.Thread):
     def do_thing_with_message(self, message):
         with print_lock:
             print (threading.currentThread().getName(), "Received {}".format(message.summary()))
-            print(state_machine)
             for transition in state_machine["states"][self.state]["transitions"]:
                 if eval(transition["transiotion_condition"]):
                     exec(transition["transition_response"])
@@ -61,7 +60,7 @@ if __name__ == '__main__':
                 connections[client_address].queue.put(p)
             else:
                 q = Queue()
-                connections[client_address] = StatefulSocket(q, str)
+                connections[client_address] = StatefulSocket(q)
                 connections[client_address].start()
                 connections[client_address].queue.put(p)
 
