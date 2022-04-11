@@ -48,14 +48,25 @@ if __name__ == '__main__':
             client_address = str(p[IP].src) + ":" + str(p[TCP].sport)
             print("got data from: ", client_address)
 
-            if client_address not in connections.keys():
+            # if client_address not in connections.keys():
+            #     q = Queue()
+            #     connections[client_address] = StatefulSocket(q, str)
+            #     connections[client_address].start()
+            # else:
+            #     if connections[client_address].is_alive():
+            #         connections[client_address].queue.put(p)
+            #     else:
+            #         q = Queue()
+            #         connections[client_address] = StatefulSocket(q, str)
+            #         connections[client_address].start()
+
+            if client_address in connections.keys() and connections[client_address].is_alive():
+                connections[client_address].queue.put(p)
+            else:
                 q = Queue()
                 connections[client_address] = StatefulSocket(q, str)
                 connections[client_address].start()
-            else:
                 connections[client_address].queue.put(p)
-
-
 
             # for state in test_istruction["states"]:
             #     logger.debug(state)
