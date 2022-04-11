@@ -33,6 +33,7 @@ class StatefulSocket(threading.Thread):
             for transition in state_machine["states"][self.state]["transitions"]:
                 if eval(transition["transiotion_condition"]):
                     exec(transition["transition_response"])
+                    print("from this state "+ self.state + "to "+ transition["next_state"])
                     self.state = transition["next_state"]
                     break
                     
@@ -47,9 +48,7 @@ if __name__ == '__main__':
         counter = 0
         while 1:
             packet, address = s.recvfrom(2000)
-            print(packet)
-            print(address)
-            print(type(address))
+ 
             p = packet[0]
             p = IP(packet)
 
