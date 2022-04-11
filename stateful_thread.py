@@ -34,6 +34,7 @@ class StatefulSocket(threading.Thread):
                 if eval(transition["transiotion_condition"]):
                     exec(transition["transition_response"])
                     self.state = transition["next_state"]
+                    
 
 if __name__ == '__main__':
     s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
