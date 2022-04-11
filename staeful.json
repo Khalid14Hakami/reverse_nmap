@@ -17,7 +17,7 @@
         "3WHS_SYN": {
             "transitions": [
                 {
-                    "transiotion_condition": "p[flag] = 'A'",
+                    "transiotion_condition": "p['TCP'].flags == 'A'",
                     "transition_response": "print('3way hand shake competed')",
                     "next_state": "3WHS_COMPLETE"
                 },
@@ -31,8 +31,8 @@
         "3WHS_COMPLETE": {
             "transitions": [
                 {
-                    "transiotion_condition": "p[flag] = 'ACK'",
-                    "transition_response": "multi line scapy code",
+                    "transiotion_condition": "p['TCP'].flags == 'P'",
+                    "transition_response": "print(p[TCP].payload)",
                     "next_state": "3WHS_COMPLETE"
                 },
                 {
