@@ -3,8 +3,8 @@
         "init": {
             "transitions": [
                 {
-                    "transiotion_condition": "p[flag] = 'SYN'",
-                    "transition_response": "multi line scapy code\nfgsfgdsfg",
+                    "transiotion_condition": "p['TCP'].flags == 'S'",
+                    "transition_response": "print('this is my response')",
                     "next_state": "3WHS_SYN"
                 },
                 {
