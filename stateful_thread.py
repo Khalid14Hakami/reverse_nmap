@@ -29,7 +29,8 @@ class StatefulSocket(threading.Thread):
     def do_thing_with_message(self, message):
         with print_lock:
             print (threading.currentThread().getName(), "Received {}".format(message.summary()))
-            for transition in self.states[self.state]["transitions"]:
+            print(state_machine)
+            for transition in self.state_machine[self.state]["transitions"]:
                 if eval(transition["transiotion_condition"]):
                     exec(transition["transition_response"])
                     self.state = transition["next_state"]
