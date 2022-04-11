@@ -35,6 +35,8 @@ if __name__ == '__main__':
         while 1:
             packet, address = s.recvfrom(2000)
             print(packet)
+            print(address)
+            print(type(address))
             p = packet[0]
             p = IP(packet)
             # if Raw in packet:
