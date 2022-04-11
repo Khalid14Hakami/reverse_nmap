@@ -45,8 +45,9 @@ if __name__ == '__main__':
             #     load = packet[Raw].load
             #     print(load)
             print(p.summary())
-            print("got data from: ", p[IP].src + ":"+p[TCP].sport)
-            client_address = p[IP].src + ":"+p[TCP].sport
+            client_address = str(p[IP].src) + ":" + str(p[TCP].sport)
+            print("got data from: ", client_address)
+
             if client_address not in connections.keys():
                 q = Queue()
                 connections[client_address] = StatefulSocket(q, str)
