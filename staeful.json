@@ -31,8 +31,8 @@
         "3WHS_COMPLETE": {
             "transitions": [
                 {
-                    "transiotion_condition": "p['TCP'].flags == 'P'",
-                    "transition_response": "print(p[TCP].payload)",
+                    "transiotion_condition": "p['TCP'].flags == 'PA'",
+                    "transition_response": "print(p[TCP].payload)\nip = IP(src=p['IP'].dst, dst=p['IP'].src)/TCP( flags='A', sport=p['TCP'].dport, dport=p['TCP'].sport, seq = p['TCP'].ack, ack = p['TCP'].seq + p['TCP'].len, )\npair = send(ip, verbose=30)",
                     "next_state": "3WHS_COMPLETE"
                 },
                 {
