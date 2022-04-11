@@ -15,7 +15,7 @@ class StatefulSocket(threading.Thread):
         # self.receive_messages = args[0]
 
     def run(self):
-        print (threading.currentThread().getName(), self.receive_messages)
+        print (threading.currentThread().getName())
         while True:
             val = self.queue.get()
             if val is None:   # TODO: change to if FIN 
