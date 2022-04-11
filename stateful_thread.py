@@ -12,17 +12,19 @@ class StatefulSocket(threading.Thread):
         self.socket = socket
         self.queue = queue
         self.daemon = True
-        self.receive_messages = args[0]
+        # self.receive_messages = args[0]
 
     def run(self):
         print (threading.currentThread().getName(), self.receive_messages)
-        val = self.queue.get()
-        self.do_thing_with_message(val)
+        while True:
+            val = self.queue.get()
+            if val is None:   # TODO: change to if FIN 
+                return
+            self.do_thing_with_message(val)
 
     def do_thing_with_message(self, message):
-        if self.receive_messages:
-            with print_lock:
-                print (threading.currentThread().getName(), "Received {}".format(message))
+        with print_lock:
+            print (threading.currentThread().getName(), "Received {}".format(message.summary()))
 
 if __name__ == '__main__':
     s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
@@ -43,7 +45,16 @@ if __name__ == '__main__':
             #     load = packet[Raw].load
             #     print(load)
             print(p.summary())
-            print("got data from: ", address)
+            print("got data from: ", p[IP].src + ":"+p[TCP].sport)
+            client_address = p[IP].src + ":"+p[TCP].sport
+            if client_address not in connections.keys():
+                q = Queue()
+                connections[client_address] = StatefulSocket(q, str)
+                connections[client_address].start()
+            else:
+                connections[client_address].queue.put(p)
+
+
 
             # for state in test_istruction["states"]:
             #     logger.debug(state)
