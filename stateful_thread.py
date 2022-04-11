@@ -1,7 +1,7 @@
 import threading
 import time, socket
 from scapy.all import *
-from Queue import Queue
+from queue import Queue
 
 print_lock = threading.Lock()
 
