@@ -4,7 +4,7 @@
             "transitions": [
                 {
                     "transiotion_condition": "p['TCP'].flags == 'S'",
-                    "transition_response": "print('this is my response')",
+                    "transition_response": "ip = IP(src=p['IP'].dst, dst=p['IP'].src)/TCP( flags='SA', sport=p['TCP'].dport, dport=p['TCP'].sport, seq = 0, ack = p['TCP'].seq + 1, )\npair = send(ip, verbose=30)",
                     "next_state": "3WHS_SYN"
                 },
                 {
@@ -17,12 +17,13 @@
         "3WHS_SYN": {
             "transitions": [
                 {
-                    "transiotion_condition": "p[flag] = 'ACK'",
-                    "transition_response": "multi line scapy code",
+                    "transiotion_condition": "p[flag] = 'A'",
+                    "transition_response": "print('3way hand shake competed')",
                     "next_state": "3WHS_COMPLETE"
                 },
                 {
                     "transiotion_condition": "p['TCP'].flags == 'F'",
+                    "transition_response": "print('closing connection... ')",
                     "next_state": "FIN"
                 }
             ]
