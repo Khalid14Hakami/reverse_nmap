@@ -56,7 +56,7 @@ class StatefulSocket(threading.Thread):
     
     def check_timeout(self):
         self.logger.debug(self.state_start_time)
-        self.logger.debug((datetime.now() - self.state_start_time))
+        self.logger.debug((datetime.now() - self.state_start_time)).total_seconds()
         self.logger.debug(float(self.states["states"][self.state]["timeout"]))
         return (datetime.now() - self.state_start_time).total_seconds() > float(self.states["states"][self.state]["timeout"])
 
