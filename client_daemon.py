@@ -29,12 +29,16 @@ class StatefulSocket(threading.Thread):
     def run(self):
         self.logger.debug(threading.currentThread().getName())
         while True:
-            if self.check_timeout(): # to end the thread (state for this connectio) after timeout 
-                break
-            val = self.queue.get()
-            if val is None:   # TODO: change to state termination condition 
-                return
-            self.respond(val)
+            try:
+                self.logger.debug(" im a liveeee")
+                # if self.check_timeout(): # to end the thread (state for this connectio) after timeout 
+                #     break
+                val = self.queue.get()
+                if val is None:   # TODO: change to state termination condition 
+                    return
+                self.respond(val)
+            except Exception as e: 
+                self.logger.exception(e)
 
     def respond(self, message):
         with print_lock:
