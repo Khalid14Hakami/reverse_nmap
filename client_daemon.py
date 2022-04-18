@@ -3,7 +3,7 @@
 from datetime import datetime
 from itertools import count
 import sys, socket, json, logging, os
-import time, dateime
+import time, datetime
 from daemon import daemon
 import subprocess
 import ast
