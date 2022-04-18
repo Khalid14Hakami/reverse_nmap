@@ -23,7 +23,8 @@ class StatefulSocket(threading.Thread):
         self.states = server_state_machine
         self.queue = queue
         self.state_start_time = localtime()
-        logger = logging.getLogger('thread-'+threading.currentThread().getName())
+        # logging.basicConfig(level = logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s', filename = '/tmp/client_daemon.log', filemode='w')
+        self.logger = logging.getLogger('thread-'+threading.currentThread().getName())
 
     def run(self):
         self.logger.debug(threading.currentThread().getName())
