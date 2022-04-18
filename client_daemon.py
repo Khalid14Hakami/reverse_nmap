@@ -58,7 +58,7 @@ class StatefulSocket(threading.Thread):
         self.logger.debug(self.state_start_time)
         self.logger.debug((datetime.now() - self.state_start_time))
         self.logger.debug(float(self.states["states"][self.state]["timeout"]))
-        return (datetime.now() - self.state_start_time).total_sconds() > float(self.states["states"][self.state]["timeout"])
+        return (datetime.now() - self.state_start_time).total_seconds() > float(self.states["states"][self.state]["timeout"])
 
 class ClientDaemon(daemon):
     logging_level = 30 
