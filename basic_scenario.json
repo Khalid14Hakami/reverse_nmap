@@ -15,7 +15,8 @@
                             "transiotion_condition": "p['TCP'].flags == 'F'",
                             "next_state": "FIN"
                         }
-                    ] 
+                    ],
+                    "timeout": "30" 
         
                 },
                 "3WHS_SYN": {
@@ -30,7 +31,8 @@
                             "transition_response": "print('closing connection... ')",
                             "next_state": "FIN"
                         }
-                    ]
+                    ],
+                    "timeout": "30" 
                 },
                 "3WHS_COMPLETE": {
                     "transitions": [
@@ -43,7 +45,8 @@
                             "transiotion_condition": "p['TCP'].flags == 'F'",
                             "next_state": "FIN"
                         }
-                    ]
+                    ],
+                    "timeout": "30" 
                 },
                 "FIN": {
                     "pre_state": "scapy code to colse connection and kill thread",
@@ -53,7 +56,8 @@
                             "transition_response": "multi line scapy code",
                             "next_state": "3WHS_COMPLETE"
                         }
-                    ]
+                    ],
+                    "timeout": "30" 
                 }
             }
         }

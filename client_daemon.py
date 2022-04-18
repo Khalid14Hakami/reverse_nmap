@@ -2,7 +2,7 @@
  
 from itertools import count
 import sys, socket, json, logging, os
-from time import sleep
+from time import sleep, localtime
 from daemon import daemon
 import subprocess
 import ast
@@ -19,12 +19,16 @@ class StatefulSocket(threading.Thread):
     def __init__(self, queue, server_state_machine, args=(), kwargs=None):
         threading.Thread.__init__(self, args=(), kwargs=None)
         self.state = "init"
-        self.states = server_state_machine.copy()
+        self.timeout = 120 # in seconds
+        self.states = server_state_machine
         self.queue = queue
+        self.state_start_time = localtime()
 
     def run(self):
         print (threading.currentThread().getName())
         while True:
+            if self.check_timeout():
+                break
             val = self.queue.get()
             if val is None:   # TODO: change to state termination condition 
                 return
@@ -33,12 +37,16 @@ class StatefulSocket(threading.Thread):
     def respond(self, message):
         with print_lock:
             print (threading.currentThread().getName(), "Received {}".format(message.summary()))
-            for transition in state_machine["states"][self.state]["transitions"]:
+            for transition in self.states["states"][self.state]["transitions"]:
                 if eval(transition["transition_condition"]):
                     exec(transition["transition_response"])
                     print("from this state "+ self.state + "to "+ transition["next_state"])
                     self.state = transition["next_state"]
+                    self.state_start_time = localtime()
                     break
+    
+    def check_timeout(self):
+        return (localtime() - self.state_start_time) > self.states["states"][self.state]["timeout"]
 
 class ClientDaemon(daemon):
     logging_level = 30 
