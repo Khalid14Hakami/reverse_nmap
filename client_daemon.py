@@ -68,7 +68,7 @@ class ClientDaemon(daemon):
                     with conn:
                         print(f"Connected by {addr}")
                         while True:
-                            data = conn.recv(1024)
+                            data = conn.recv(5120)
                             # if not data:
                             #     break
                             
