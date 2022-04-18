@@ -68,8 +68,8 @@ class ClientDaemon(daemon):
                         print(f"Connected by {addr}")
                         while True:
                             data = conn.recv(5120)
-                            # if not data:
-                            #     break
+                            if not data:
+                                break
                             
                             data = data.decode("utf-8")
 
