@@ -44,6 +44,7 @@ class StatefulSocket(threading.Thread):
         with print_lock:
             self.logger.debug("Received {}".format(message.summary()))
             for transition in self.states["states"][self.state]["transitions"]:
+                p = message # this is the packet parsed at parent as a scapy packet 
                 if eval(transition["transition_condition"]):
                     exec(transition["transition_response"])
                     print("from this state "+ self.state + "to "+ transition["next_state"])
