@@ -32,6 +32,7 @@ class StatefulSocket(threading.Thread):
             try:
                 self.logger.debug(" im a liveeee")
                 if self.check_timeout(): # to end the thread (state for this connectio) after timeout 
+                    self.logger.debug(" timeout..... bye")
                     break
                 val = self.queue.get()
                 if val is None:   # TODO: change to state termination condition 
