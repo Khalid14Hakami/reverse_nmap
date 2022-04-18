@@ -138,8 +138,12 @@ class ClientDaemon(daemon):
 
 
                 if client_address in connections.keys() and connections[client_address].is_alive():
+                    logger.debug("client exsit:   >>>>>>>>>>>> ^^^^^^^^^^^^^^^^ <<<<<<<<<<<")
+
                     connections[client_address].queue.put(p)
                 else:
+                    logger.debug("new client:   >>>>>>>>>>>> ^^^^^^^^^^^^^^^^ <<<<<<<<<<<")
+
                     q = Queue()
                     connections[client_address] = StatefulSocket(q, state_machine)
                     connections[client_address].start()
