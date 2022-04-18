@@ -23,7 +23,7 @@ class StatefulSocket(threading.Thread):
         self.timeout = 120 # in seconds
         self.states = server_state_machine
         self.queue = queue
-        self.state_start_time = datetime.datetime.now()
+        self.state_start_time = datetime.now()
         # logging.basicConfig(level = logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s', filename = '/tmp/client_daemon.log', filemode='w')
         self.logger = logging.getLogger('thread-'+threading.currentThread().getName())
 
@@ -51,14 +51,14 @@ class StatefulSocket(threading.Thread):
                     exec(transition["transition_response"])
                     print("from this state "+ self.state + "to "+ transition["next_state"])
                     self.state = transition["next_state"]
-                    self.state_start_time = datetime.datetime.now()
+                    self.state_start_time = datetime.now()
                     break # dont check other transitions 
     
     def check_timeout(self):
         self.logger.debug(self.state_start_time)
-        self.logger.debug((datetime.datetime.now() - self.state_start_time))
+        self.logger.debug((datetime.now() - self.state_start_time))
         self.logger.debug(float(self.states["states"][self.state]["timeout"]))
-        return (datetime.datetime.now() - self.state_start_time).total_sconds() > float(self.states["states"][self.state]["timeout"])
+        return (datetime.now() - self.state_start_time).total_sconds() > float(self.states["states"][self.state]["timeout"])
 
 class ClientDaemon(daemon):
     logging_level = 30 
