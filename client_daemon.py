@@ -2,7 +2,7 @@
  
 from itertools import count
 import sys, socket, json, logging, os
-from time import sleep, time
+import time
 from daemon import daemon
 import subprocess
 import ast
@@ -22,7 +22,7 @@ class StatefulSocket(threading.Thread):
         self.timeout = 120 # in seconds
         self.states = server_state_machine
         self.queue = queue
-        self.state_start_time = time()
+        self.state_start_time = time.time()
         # logging.basicConfig(level = logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s', filename = '/tmp/client_daemon.log', filemode='w')
         self.logger = logging.getLogger('thread-'+threading.currentThread().getName())
 
@@ -49,11 +49,11 @@ class StatefulSocket(threading.Thread):
                     exec(transition["transition_response"])
                     print("from this state "+ self.state + "to "+ transition["next_state"])
                     self.state = transition["next_state"]
-                    self.state_start_time = time()
+                    self.state_start_time = time.time()
                     break
     
     def check_timeout(self):
-        return (time() - self.state_start_time) > self.states["states"][self.state]["timeout"]
+        return (time.time() - self.state_start_time) > self.states["states"][self.state]["timeout"]
 
 class ClientDaemon(daemon):
     logging_level = 30 
@@ -215,10 +215,10 @@ class ClientDaemon(daemon):
                         snooz = True
                         return True
                 if snooz: 
-                    sleep(300) 
+                    time.sleep(300) 
                     snooz = False
                 else: 
-                    sleep(5)
+                    time.sleep(5)
                 
             
             except Exception as e: 
