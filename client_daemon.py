@@ -136,9 +136,12 @@ class ClientDaemon(daemon):
 
                 logger.debug(p.summary())
                 client_address = str(p[IP].src) + ":" + str(p[TCP].sport)
-                logger.debug("got data from: ", client_address)
-
-
+                logger.debug("got data from: " + client_address)
+                logger.debug("connections.keys()       : 888888888")
+                logger.debug(connections.keys())
+                logger.debug("is it alive?????????")
+                logger.debug(connections[client_address].is_alive())
+                
                 if client_address in connections.keys() and connections[client_address].is_alive():
                     logger.debug("client exsit:   >>>>>>>>>>>> ^^^^^^^^^^^^^^^^ <<<<<<<<<<<")
 
