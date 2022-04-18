@@ -53,7 +53,7 @@ class StatefulSocket(threading.Thread):
                     break
     
     def check_timeout(self):
-        return (time.time() - self.state_start_time) > self.states["states"][self.state]["timeout"]
+        return (time.time() - self.state_start_time) > float(self.states["states"][self.state]["timeout"])
 
 class ClientDaemon(daemon):
     logging_level = 30 

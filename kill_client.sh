@@ -1,0 +1,1 @@
+kill $( ps -ef | grep 'client' | awk '{print $2}') 
