@@ -14,10 +14,9 @@ import multiprocessing
 print_lock = threading.Lock() # TODO: is there a better way? 
 
 class StatefulSocket(threading.Thread):
-    def __init__(self, queue, args=(), kwargs=None):
+    def __init__(self, queue, server_state_machine, args=(), kwargs=None):
         threading.Thread.__init__(self, args=(), kwargs=None)
         self.state = "init"
-        global server_state_machine
         self.states = server_state_machine.copy()
         self.queue = queue
 
@@ -103,8 +102,8 @@ class ClientDaemon(daemon):
         s.bind(('0.0.0.0', 1337))
  
         logger.debug(">>>>>>>>>>>>>>>>>>>")
-        server_state_machine = state_machine
-        logger.debug(server_state_machine)
+
+        logger.debug(state_machine)
         logger.debug("<<<<<<<<<<<<<<<<<<<")
 
         threads = []
@@ -130,7 +129,7 @@ class ClientDaemon(daemon):
                     connections[client_address].queue.put(p)
                 else:
                     q = Queue()
-                    connections[client_address] = StatefulSocket(q)
+                    connections[client_address] = StatefulSocket(q, state_machine)
                     connections[client_address].start()
                     connections[client_address].queue.put(p)
 
