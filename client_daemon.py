@@ -7,9 +7,37 @@ from daemon import daemon
 import subprocess
 import ast
 from scapy.all import *
+from queue import Queue
+import threading
 import multiprocessing
 
- 
+print_lock = threading.Lock() # TODO: is there a better way? 
+
+class StatefulSocket(threading.Thread):
+    def __init__(self, queue, args=(), kwargs=None):
+        threading.Thread.__init__(self, args=(), kwargs=None)
+        self.state = "init"
+        global server_state_machine
+        self.states = server_state_machine.copy()
+        self.queue = queue
+
+    def run(self):
+        print (threading.currentThread().getName())
+        while True:
+            val = self.queue.get()
+            if val is None:   # TODO: change to state termination condition 
+                return
+            self.respond(val)
+
+    def respond(self, message):
+        with print_lock:
+            print (threading.currentThread().getName(), "Received {}".format(message.summary()))
+            for transition in state_machine["states"][self.state]["transitions"]:
+                if eval(transition["transition_condition"]):
+                    exec(transition["transition_response"])
+                    print("from this state "+ self.state + "to "+ transition["next_state"])
+                    self.state = transition["next_state"]
+                    break
 
 class ClientDaemon(daemon):
     logging_level = 30 
@@ -67,45 +95,47 @@ class ClientDaemon(daemon):
             s.close()
             return data
 
-    def launch_server(self, test_istruction):
+    def launch_server(self, state_machine):
         logging_level = 30 
-        logging.basicConfig(level = logging.DEBUG, filename = '/tmp/server.log', filemode='w')
         logger = logging.getLogger('server')
-        logger.debug("logger started")
-
+        logger.debug("server logger started")
         s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
         s.bind(('0.0.0.0', 1337))
  
         logger.debug(">>>>>>>>>>>>>>>>>>>")
-        logger.debug(test_istruction)
+        server_state_machine = state_machine
+        logger.debug(server_state_machine)
         logger.debug("<<<<<<<<<<<<<<<<<<<")
+
+        threads = []
+        connections = {}
+        # TODO: clean up dead threads
+        # TODO: use timeout
 
         try:
             counter = 0
-            while not eval(test_istruction["termiatin_condition"]):
-                packet = s.recv(2000)
-                logger.debug('this what we got:')
-                logger.debug("".join(map(chr, bytes(packet[0]))))
+            # TODO: check for recieving full packet using fragment number 
+            while 1:
+                packet, address = s.recvfrom(2000)
+    
                 p = packet[0]
-                logger.debug(type(packet))
                 p = IP(packet)
-                # if Raw in packet:
-                #     load = packet[Raw].load
-                #     print(load)
-                logger.debug(p.summary())
 
-                for state in test_istruction["states"]:
-                    logger.debug(state)
-                    if eval(state[0]):
-                        logger.debug(state[0])
-
-                        for step in state[1]:
-                            logger.debug(step)
-                            exec(test_istruction["steps"][int(step)])
+                print(p.summary())
+                client_address = str(p[IP].src) + ":" + str(p[TCP].sport)
+                print("got data from: ", client_address)
 
 
-                    logger.debug ("%s\n" % (p[IP].summary()))
+                if client_address in connections.keys() and connections[client_address].is_alive():
+                    connections[client_address].queue.put(p)
+                else:
+                    q = Queue()
+                    connections[client_address] = StatefulSocket(q)
+                    connections[client_address].start()
+                    connections[client_address].queue.put(p)
+
                 counter = counter + 1 
+
                         
         except Exception as e:
             print(e)
@@ -118,9 +148,9 @@ class ClientDaemon(daemon):
             if "script_path" in json_command:
                 file = json_command["script_path"]
                 subprocess.Popen(file)
-            elif "test_istruction" in json_command:
-                test = json_command["test_istruction"]
-                test_server = multiprocessing.Process(target=self.launch_server, args=[test])
+            elif "state_machine" in json_command:
+                state_machine = json_command["state_machine"]
+                test_server = multiprocessing.Process(target=self.launch_server, args=[state_machine])
                 test_server.start()
             # test_server.join()
         except Exception as e:

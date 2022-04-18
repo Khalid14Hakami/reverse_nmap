@@ -22,15 +22,15 @@ class StatefulSocket(threading.Thread):
         print (threading.currentThread().getName())
         while True:
             val = self.queue.get()
-            if val is None:   # TODO: change to if FIN 
+            if val is None:   # TODO: change to state termination condition 
                 return
-            self.do_thing_with_message(val)
+            self.respond(val)
 
-    def do_thing_with_message(self, message):
+    def respond(self, message):
         with print_lock:
             print (threading.currentThread().getName(), "Received {}".format(message.summary()))
             for transition in state_machine["states"][self.state]["transitions"]:
-                if eval(transition["transiotion_condition"]):
+                if eval(transition["transition_condition"]):
                     exec(transition["transition_response"])
                     print("from this state "+ self.state + "to "+ transition["next_state"])
                     self.state = transition["next_state"]

@@ -45,7 +45,7 @@
             "pre_state": "scapy code to colse connection and kill thread",
             "transitions": [
                 {
-                    "transiotion_condition": "p[flag] = 'ACK'",
+                    "transition_condition": "p[flag] = 'ACK'",
                     "transition_response": "multi line scapy code",
                     "next_state": "3WHS_COMPLETE"
                 }

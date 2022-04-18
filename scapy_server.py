@@ -26,7 +26,7 @@ flags='A',
 sport=p['TCP'].dport,
 dport=p['TCP'].sport,
 seq = p['TCP'].seq ,
-ack = p['TCP'].seq + p['TCP'].len,
+ack = p['TCP'].seq + len(p['TCP'].payload),
 )
 pair = sr1(ip, verbose=30, timeout= 3)"""
     ], 
