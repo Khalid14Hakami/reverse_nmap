@@ -27,7 +27,7 @@ class StatefulSocket(threading.Thread):
     def run(self):
         print (threading.currentThread().getName())
         while True:
-            if self.check_timeout():
+            if self.check_timeout(): # to end the thread (state for this connectio) after timeout 
                 break
             val = self.queue.get()
             if val is None:   # TODO: change to state termination condition 
@@ -125,14 +125,16 @@ class ClientDaemon(daemon):
             counter = 0
             # TODO: check for recieving full packet using fragment number 
             while 1:
+                logger.debug("trying to get message:   >>>>>>>>>>>> ^^^^^^^^^^^^^^^^ <<<<<<<<<<<")
+
                 packet, address = s.recvfrom(2000)
     
                 p = packet[0]
                 p = IP(packet)
 
-                print(p.summary())
+                logger.debug(p.summary())
                 client_address = str(p[IP].src) + ":" + str(p[TCP].sport)
-                print("got data from: ", client_address)
+                logger.debug("got data from: ", client_address)
 
 
                 if client_address in connections.keys() and connections[client_address].is_alive():
