@@ -51,9 +51,11 @@ class StatefulSocket(threading.Thread):
                     print("from this state "+ self.state + "to "+ transition["next_state"])
                     self.state = transition["next_state"]
                     self.state_start_time = time.time()
-                    break
+                    break # dont check other transitions 
     
     def check_timeout(self):
+        self.logger.debug((time.time() - self.state_start_time))
+        self.logger.debug(float(self.states["states"][self.state]["timeout"]))
         return (time.time() - self.state_start_time) > float(self.states["states"][self.state]["timeout"])
 
 class ClientDaemon(daemon):
