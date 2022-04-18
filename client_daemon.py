@@ -23,9 +23,10 @@ class StatefulSocket(threading.Thread):
         self.states = server_state_machine
         self.queue = queue
         self.state_start_time = localtime()
+        logger = logging.getLogger('thread-'+threading.currentThread().getName())
 
     def run(self):
-        print (threading.currentThread().getName())
+        self.logger.debug(threading.currentThread().getName())
         while True:
             if self.check_timeout(): # to end the thread (state for this connectio) after timeout 
                 break
@@ -36,7 +37,7 @@ class StatefulSocket(threading.Thread):
 
     def respond(self, message):
         with print_lock:
-            print (threading.currentThread().getName(), "Received {}".format(message.summary()))
+            self.logger.debug("Received {}".format(message.summary()))
             for transition in self.states["states"][self.state]["transitions"]:
                 if eval(transition["transition_condition"]):
                     exec(transition["transition_response"])
