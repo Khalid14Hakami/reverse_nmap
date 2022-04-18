@@ -41,7 +41,7 @@ class StatefulSocket(threading.Thread):
 
 class ClientDaemon(daemon):
     logging_level = 30 
-    logging.basicConfig(level = logging.DEBUG, filename = '/tmp/client_daemon.log', filemode='w')
+    logging.basicConfig(level = logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s', filename = '/tmp/client_daemon.log', filemode='w')
     logger = logging.getLogger('client')
     hostname = socket.gethostname()
     def run(self):
