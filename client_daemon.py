@@ -10,6 +10,8 @@ from scapy.all import *
 from queue import Queue
 import threading
 import multiprocessing
+import psutil
+
 
 print_lock = threading.Lock() # TODO: is there a better way? 
 
@@ -148,8 +150,14 @@ class ClientDaemon(daemon):
                 file = json_command["script_path"]
                 subprocess.Popen(file)
             elif "state_machine" in json_command:
+                # kill all subprocesses if any
+                current_process = psutil.Process()
+                children = current_process.children(recursive=True)
+                for child_prc in children:
+                    child_prc.terminate()
                 state_machine = json_command["state_machine"]
                 test_server = multiprocessing.Process(target=self.launch_server, args=[state_machine])
+                test_server.daemon = True 
                 test_server.start()
             # test_server.join()
         except Exception as e:
