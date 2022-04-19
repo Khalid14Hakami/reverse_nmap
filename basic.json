@@ -8,7 +8,7 @@
                     "transitions": [
                         {
                             "transition_condition": "p['TCP'].flags == 'S'",
-                            "transition_response": "ip = IP(src=p['IP'].dst, dst=p['IP'].src)/TCP( flags='SA', sport=p['TCP'].dport, dport=p['TCP'].sport, seq = 0, ack = p['TCP'].seq + 1, )\npair = send(ip, verbose=30)",
+                            "transition_response": "ip = IP(src=p['IP'].dst, dst=p['IP'].src)/TCP( flags='SA', sport=p['TCP'].dport, dport=p['TCP'].sport, seq = 0, ack = p['TCP'].seq + 1, )\npair = send(ip, verbose=300)",
                             "next_state": "3WHS_SYN"
                         },
                         {
@@ -16,7 +16,7 @@
                             "next_state": "FIN"
                         }
                     ],
-                    "timeout": "30" 
+                    "timeout": "300" 
         
                 },
                 "3WHS_SYN": {
@@ -32,13 +32,13 @@
                             "next_state": "FIN"
                         }
                     ],
-                    "timeout": "30" 
+                    "timeout": "300" 
                 },
                 "3WHS_COMPLETE": {
                     "transitions": [
                         {
                             "transition_condition": "p['TCP'].flags == 'PA'",
-                            "transition_response": "print(p[TCP].payload)\nip = IP(src=p['IP'].dst, dst=p['IP'].src)/TCP( flags='PA', sport=p['TCP'].dport, dport=p['TCP'].sport, seq = p['TCP'].ack, ack = p['TCP'].seq + len(p['TCP'].payload), )\npair = send(ip, verbose=30)",
+                            "transition_response": "print(p[TCP].payload)\nip = IP(src=p['IP'].dst, dst=p['IP'].src)/TCP( flags='PA', sport=p['TCP'].dport, dport=p['TCP'].sport, seq = p['TCP'].ack, ack = p['TCP'].seq + len(p['TCP'].payload), )\npair = send(ip, verbose=300)",
                             "next_state": "3WHS_COMPLETE"
                         },
                         {
@@ -46,7 +46,7 @@
                             "next_state": "FIN"
                         }
                     ],
-                    "timeout": "30" 
+                    "timeout": "300" 
                 },
                 "FIN": {
                     "pre_state": "scapy code to colse connection and kill thread",
@@ -57,7 +57,7 @@
                             "next_state": "3WHS_COMPLETE"
                         }
                     ],
-                    "timeout": "30" 
+                    "timeout": "300" 
                 }
             }
         }
