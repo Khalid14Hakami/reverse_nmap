@@ -124,7 +124,8 @@ class ClientDaemon(daemon):
         logger = logging.getLogger('server')
         logger.debug("server logger started")
         s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
-        s.bind(("", 1337))
+        PORT = 1337 
+        s.bind(("", PORT))
  
         logger.debug(">>>>>>>>>>>>>>>>>>>")
 
@@ -146,7 +147,8 @@ class ClientDaemon(daemon):
     
                 p = packet[0]
                 p = IP(packet)
-
+                if(p[TCP].dport != PORT): # this is to ensure that we are only handling request to our server PORT 
+                    continue
                 logger.debug(p.summary())
                 client_address = str(p[IP].src) + ":" + str(p[TCP].sport)
                 logger.debug("got data from: " + client_address)
