@@ -124,7 +124,7 @@ class ClientDaemon(daemon):
         logger = logging.getLogger('server')
         logger.debug("server logger started")
         s = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
-        s.bind(('0.0.0.0', 1337))
+        s.bind(("", 1337))
  
         logger.debug(">>>>>>>>>>>>>>>>>>>")
 
