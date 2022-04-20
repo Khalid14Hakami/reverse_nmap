@@ -70,6 +70,6 @@
     ],
     "sniffer_settings": {
         "HOST": "sniffer",
-        "script_path": "/root/reverse_nmap/scripts/sniffer.sh syn_test" 
+        "script_path": "/root/reverse_nmap/scripts/sniffer.sh basic" 
     }
 }

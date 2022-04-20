@@ -17,6 +17,12 @@ import psutil
 print_lock = threading.Lock() # TODO: is there a better way? 
 
 class StatefulSocket(threading.Thread):
+    """
+        this class is the thread that handle the state of each connection. 
+        it waits for packets input from its internal queue and respond according to its state
+    """
+    
+    
     def __init__(self, queue, server_state_machine, args=(), kwargs=None):
         threading.Thread.__init__(self, args=(), kwargs=None)
         self.state = "init"
@@ -31,9 +37,12 @@ class StatefulSocket(threading.Thread):
         self.logger.debug(threading.currentThread().getName())
         while True:
             try:
+                """ TODO: check if the packet has arraived completely. 
+                    If the Fragment Offset field > 0 then it is a packet fragment, 
+                    or if the Fragment Offset field = 0 and the MF flag is set then it is a fragment packet.
+                """
                 val = self.queue.get()
-                if self.check_timeout(): # to end the thread (state for this connectio) after timeout 
-                    self.logger.debug(" timeout..... bye")
+                if self.check_timeout():  
                     break
                 if val is None:   # TODO: change to state termination condition 
                     return
@@ -48,17 +57,12 @@ class StatefulSocket(threading.Thread):
                 p = message # this is the packet parsed at parent as a scapy packet 
                 if eval(transition["transition_condition"]):
                     exec(transition["transition_response"])
-                    print("from this state "+ self.state + "to "+ transition["next_state"])
+                    self.logger.debug("from this state "+ self.state + "to "+ transition["next_state"])
                     self.state = transition["next_state"]
                     self.state_start_time = datetime.now()
                     break # dont check other transitions 
     
     def check_timeout(self):
-        self.logger.debug(self.state_start_time)
-        self.logger.debug(datetime.now())
-        self.logger.debug((datetime.now() - self.state_start_time))
-        self.logger.debug(type(datetime.now() - self.state_start_time))
-        self.logger.debug(float(self.states["states"][self.state]["timeout"]))
         return (datetime.now() - self.state_start_time).total_seconds() > float(self.states["states"][self.state]["timeout"])
 
 class ClientDaemon(daemon):
@@ -93,7 +97,6 @@ class ClientDaemon(daemon):
                             data = conn.recv(5120)
                             if not data:
                                 break
-                            
                             data = data.decode("utf-8")
 
                             self.logger.debug('received the following:')
@@ -110,14 +113,15 @@ class ClientDaemon(daemon):
         except Exception as e:
             print(e)
             self.logger.exception(e)
-
-
-
         finally:
             s.close()
             return data
 
     def launch_server(self, state_machine):
+        """
+            This function is the heart of our scapy server. When we recieve a state machine, 
+            this function runs in a sup-process and handle each connection in a different thread
+        """
         logging_level = 30 
         logger = logging.getLogger('server')
         logger.debug("server logger started")
@@ -126,41 +130,36 @@ class ClientDaemon(daemon):
         s.bind(("", PORT))
  
         logger.debug(">>>>>>>>>>>>>>>>>>>")
-
         logger.debug(state_machine)
         logger.debug("<<<<<<<<<<<<<<<<<<<")
 
         threads = []
         connections = {}
         # TODO: clean up dead threads
-        # TODO: use timeout
+        # TODO: use global termiation condition
 
         try:
             counter = 0
             # TODO: check for recieving full packet using fragment number 
             while 1:
-                logger.debug("trying to get message:   >>>>>>>>>>>> ^^^^^^^^^^^^^^^^ <<<<<<<<<<<")
+                logger.debug("trying to get message:   >>>>>>>>>>>>")
 
                 packet, address = s.recvfrom(2000)
     
                 p = packet[0]
                 p = IP(packet)
                 logger.debug(p.summary())
-
-                if(p[TCP].dport != PORT): # this is to ensure that we are only handling request to our server PORT (TODO: could not be necessary)
-                    logger.debug("not my port!!")
-                    continue
                 
                 client_address = str(p[IP].src) + ":" + str(p[TCP].sport)
                 logger.debug(connections.keys())
                 if client_address in connections.keys():
                     logger.debug(connections[client_address].is_alive())        
                 if client_address in connections.keys() and connections[client_address].is_alive():
-                    logger.debug("client exsit:   >>>>>>>>>>>> ^^^^^^^^^^^^^^^^ <<<<<<<<<<<")
+                    logger.debug("client exsit:   >>>>>>>>>>>>")
 
                     connections[client_address].queue.put(p)
                 else:
-                    logger.debug("new client:   >>>>>>>>>>>> ^^^^^^^^^^^^^^^^ <<<<<<<<<<<")
+                    logger.debug("new client:   >>>>>>>>>>>>")
 
                     q = Queue()
                     connections[client_address] = StatefulSocket(q, state_machine)
@@ -169,14 +168,17 @@ class ClientDaemon(daemon):
 
                 counter = counter + 1 
 
-                        
+
         except Exception as e:
             print(e)
             logger.exception(e)
         
     
     def execute(self, json_command):
-        
+        """
+        to excute the command on clients (in case of the server, we only provide the server state machine. 
+        For basic clients and sniffer, we provide path to a script for execution)
+        """
         try:
             if "script_path" in json_command:
                 file = json_command["script_path"]
@@ -199,11 +201,13 @@ class ClientDaemon(daemon):
 
 
     def register(self):
+        """
+        register the client to controller and update frequently 
+        """
         self.logger.debug("start registration")
         snooz = False
         while True:
             try: 
-            
                 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 connection = s.connect(("controller", 4444))
                 self.logger.debug(' registration for     '+ str(socket.gethostname()))
