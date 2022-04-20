@@ -31,8 +31,6 @@ class StatefulSocket(threading.Thread):
         self.logger.debug(threading.currentThread().getName())
         while True:
             try:
-                self.logger.debug(" im a liveeee")
-                
                 val = self.queue.get()
                 if self.check_timeout(): # to end the thread (state for this connectio) after timeout 
                     self.logger.debug(" timeout..... bye")
@@ -148,8 +146,8 @@ class ClientDaemon(daemon):
                 p = packet[0]
                 p = IP(packet)
                 logger.debug(p.summary())
-                
-                if(p[TCP].dport != PORT): # this is to ensure that we are only handling request to our server PORT 
+
+                if(p[TCP].dport != PORT): # this is to ensure that we are only handling request to our server PORT (TODO: could not be necessary)
                     logger.debug("not my port!!")
                     continue
                 
