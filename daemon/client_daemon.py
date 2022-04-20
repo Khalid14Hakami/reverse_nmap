@@ -147,14 +147,14 @@ class ClientDaemon(daemon):
     
                 p = packet[0]
                 p = IP(packet)
-                if(p[TCP].dport != PORT): # this is to ensure that we are only handling request to our server PORT 
-                    continue
                 logger.debug(p.summary())
+                
+                if(p[TCP].dport != PORT): # this is to ensure that we are only handling request to our server PORT 
+                    logger.debug("not my port!!")
+                    continue
+                
                 client_address = str(p[IP].src) + ":" + str(p[TCP].sport)
-                logger.debug("got data from: " + client_address)
-                logger.debug("connections.keys()       : 888888888")
                 logger.debug(connections.keys())
-                logger.debug("is it alive?????????")
                 if client_address in connections.keys():
                     logger.debug(connections[client_address].is_alive())        
                 if client_address in connections.keys() and connections[client_address].is_alive():
