@@ -180,7 +180,7 @@ class ClientDaemon(daemon):
         try:
             if "script_path" in json_command:
                 file = json_command["script_path"]
-                subprocess.Popen(file)
+                subprocess.Popen(file, shell=True)
             elif "state_machine" in json_command:
                 # kill all subprocesses if any
                 current_process = psutil.Process()
